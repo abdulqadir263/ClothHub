@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../app/themes/app_theme.dart';
+import '../../auth/viewmodels/auth_vm.dart';
 
 class UserHomeView extends StatelessWidget {
   const UserHomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AuthController authController = Get.find();
+    final AuthViewModel authViewModel = Get.find<AuthViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -21,7 +22,7 @@ class UserHomeView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              authController.logout();
+              authViewModel.logout();
               Get.offAllNamed(AppRoutes.roleSelection);
             },
           ),
@@ -48,10 +49,10 @@ class UserHomeView extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Obx(() {
-                final user = authController.currentUser.value;
-                final userName = user?.name ?? 'User';
+                final user = authViewModel.currentUser.value;
+                final userEmail = user?.email ?? 'User';
                 return Text(
-                  'Hello, $userName!',
+                  'Hello, $userEmail!',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[700],

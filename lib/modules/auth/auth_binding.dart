@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import '../auth/viewmodels/auth_vm.dart';
+import 'viewmodels/auth_vm.dart';
 
-class UserHomeBinding extends Bindings {
+class AuthBinding extends Bindings {
   @override
   void dependencies() {
-    // Ensure AuthViewModel singleton exists
+    // Use Get.put to ensure singleton instance
     if (!Get.isRegistered<AuthViewModel>()) {
       Get.put<AuthViewModel>(AuthViewModel(), permanent: true);
     }
