@@ -50,8 +50,9 @@ class UserHomeView extends StatelessWidget {
               const SizedBox(height: 12),
               Obx(() {
                 final user = authController.currentUser.value;
+                final userName = user?.name ?? 'User';
                 return Text(
-                  user != null ? 'Hello, ${user.name}!' : 'Hello, User!',
+                  'Hello, $userName!',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[700],

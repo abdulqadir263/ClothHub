@@ -50,8 +50,9 @@ class AdminDashboardView extends StatelessWidget {
               const SizedBox(height: 12),
               Obx(() {
                 final user = authController.currentUser.value;
+                final userEmail = user?.email ?? 'Admin';
                 return Text(
-                  user != null ? 'Welcome, ${user.email}' : 'Welcome, Admin!',
+                  'Welcome, $userEmail',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[700],
