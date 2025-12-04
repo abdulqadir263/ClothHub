@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import '../auth/viewmodels/auth_vm.dart';
+import 'viewmodels/auth_vm.dart';
 
-class UserHomeBinding extends Bindings {
+class AuthBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<AuthViewModel>(() => AuthViewModel());
