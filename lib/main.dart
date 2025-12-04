@@ -6,7 +6,6 @@ import 'app/themes/app_theme.dart';
 
 // Controllers
 import 'modules/auth/viewmodels/auth_controller.dart';
-import 'modules/cart/viewmodels/cart_controller.dart';
 
 // Repository
 import 'data/repositories/mock_repository.dart';
@@ -25,13 +24,9 @@ class ClothHubApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
 
-      // Register ALL global controllers here
+      // Register global auth controller
       initialBinding: BindingsBuilder(() {
-        // Global Auth Controller
         Get.put(AuthController(MockRepository()), permanent: true);
-
-        // Global Cart Controller (IMPORTANT FIX)
-        Get.put(CartController(), permanent: true);
       }),
 
       initialRoute: AppRoutes.roleSelection,

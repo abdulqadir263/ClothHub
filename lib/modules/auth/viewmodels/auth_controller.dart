@@ -56,7 +56,7 @@ class AuthController extends GetxController {
       } else
       {
         Get.snackbar('Welcome', 'Logged in as ${user.email}');
-        Get.offAllNamed(AppRoutes.profile);
+        Get.offAllNamed(AppRoutes.userHome);
       }
     } catch (e)
     {
@@ -88,7 +88,7 @@ class AuthController extends GetxController {
 
       currentUser.value = user;
       Get.snackbar('Welcome', 'Account created');
-      Get.offAllNamed(AppRoutes.profile);
+      Get.offAllNamed(AppRoutes.userHome);
     } catch (e) {
       isLoading.value = false;
       Get.snackbar('Error', 'Something went wrong');

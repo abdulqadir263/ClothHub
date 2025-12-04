@@ -1,102 +1,67 @@
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import '../../../app/themes/app_theme.dart';
-// import '../viewmodels/user_home_controller.dart';
-// import '../../cart/viewmodels/cart_controller.dart';
-// import 'home_tab_view.dart';
-// import 'category_view.dart';
-// import '../../cart/views/cart_view.dart';
-// import 'profile_view.dart';
-//
-// class UserHomeView extends StatelessWidget {
-//   const UserHomeView({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//
-//     final UserHomeController c = Get.put(UserHomeController());
-//
-//     final CartController cartController =
-//     Get.isRegistered<CartController>() ? Get.find<CartController>() : Get.put(CartController());
-//
-//     final tabs = [
-//       const HomeTabView(),
-//       const CategoryView(),
-//       const CartView(),
-//       const ProfileView(),
-//     ];
-//
-//     return Obx(() => Scaffold(
-//       body: SafeArea(child: tabs[c.selectedIndex.value]),
-//
-//       bottomNavigationBar: BottomNavigationBar(
-//
-//         currentIndex: c.selectedIndex.value,
-//         onTap: c.onItemTapped,
-//         selectedItemColor: AppTheme.primary,
-//         unselectedItemColor: Colors.grey,
-//         type: BottomNavigationBarType.fixed,
-//
-//         items: [
-//
-//           const BottomNavigationBarItem(
-//               icon: Icon(Icons.home),
-//               label: 'Home'
-//           ),
-//
-//           const BottomNavigationBarItem(
-//               icon: Icon(Icons.category),
-//               label: 'Categories'
-//           ),
-//
-//           BottomNavigationBarItem(
-//             icon: Obx(() {
-//               final count = cartController.cartItems.length;
-//               return Stack(
-//                 clipBehavior: Clip.none,
-//                 children: [
-//                   const Icon(Icons.shopping_cart),
-//                   if (count > 0)
-//
-//                     Positioned(
-//                       right: -6,
-//                       top: -6,
-//
-//                       child: Container(
-//                         padding: const EdgeInsets.all(4),
-//                         decoration: BoxDecoration(
-//                           color: Colors.red,
-//                           shape: BoxShape.circle,
-//                           border: Border.all(
-//                               color: Colors.white,
-//                               width: 1.5
-//                           ),
-//                         ),
-//
-//                         constraints: const BoxConstraints(
-//                             minWidth: 18,
-//                             minHeight: 18
-//                         ),
-//
-//                         child: Center(
-//                           child: Text(
-//                             count.toString(),
-//                             style: const TextStyle(
-//                                 color: Colors.white,
-//                                 fontSize: 11
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                 ],
-//               );
-//             }),
-//             label: 'Cart',
-//           ),
-//           const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-//         ],
-//       ),
-//     ));
-//   }
-// }
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../app/routes/app_routes.dart';
+import '../../../app/themes/app_theme.dart';
+import '../../auth/viewmodels/auth_controller.dart';
+
+class UserHomeView extends StatelessWidget {
+  const UserHomeView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final AuthController authController = Get.find();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('User Home'),
+        centerTitle: true,
+        backgroundColor: AppTheme.primary,
+        foregroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              authController.currentUser.value = null;
+              Get.offAllNamed(AppRoutes.roleSelection);
+            },
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.home,
+                size: 100,
+                color: AppTheme.primary.withOpacity(0.5),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Welcome to ClothHub',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Obx(() {
+                final user = authController.currentUser.value;
+                return Text(
+                  user != null ? 'Hello, ${user.name}!' : 'Hello, User!',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[700],
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
