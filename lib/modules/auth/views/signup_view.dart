@@ -140,9 +140,8 @@ class _SignupViewState extends State<SignupView> {
                             emailController.text,
                             passwordController.text,
                             confirmPasswordController.text,
+                            role: role,
                           );
-                          // Navigate based on role after successful signup
-                          authViewModel.navigateAfterSignup(role);
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),

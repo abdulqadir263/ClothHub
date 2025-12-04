@@ -109,9 +109,8 @@ class _LoginViewState extends State<LoginView> {
                           await authViewModel.login(
                             emailController.text,
                             passwordController.text,
+                            role: role,
                           );
-                          // Navigate based on role after successful login
-                          authViewModel.navigateAfterLogin(role);
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),

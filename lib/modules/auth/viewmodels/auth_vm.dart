@@ -15,7 +15,7 @@ class AuthViewModel extends GetxController {
   }
 
   // Login with email and password
-  Future<void> login(String email, String password) async {
+  Future<void> login(String email, String password, {String role = 'user'}) async {
     if (!email.contains("@")) {
       Get.snackbar("Error", "Enter valid Email");
       return;
@@ -32,6 +32,7 @@ class AuthViewModel extends GetxController {
         password: password,
       );
       Get.snackbar("Success", "Login successful");
+      navigateAfterLogin(role);
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message ?? "Login Failed");
     } finally {
@@ -40,7 +41,7 @@ class AuthViewModel extends GetxController {
   }
 
   // Signup with email and password
-  Future<void> signup(String email, String password, String confirmPassword) async {
+  Future<void> signup(String email, String password, String confirmPassword, {String role = 'user'}) async {
     if (!email.contains("@")) {
       Get.snackbar("Error", "Enter valid Email");
       return;
@@ -61,6 +62,7 @@ class AuthViewModel extends GetxController {
         password: password,
       );
       Get.snackbar("Success", "Account created successfully");
+      navigateAfterSignup(role);
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message ?? "SignUp Failed");
     } finally {
