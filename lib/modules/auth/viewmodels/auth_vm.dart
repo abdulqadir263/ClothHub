@@ -10,11 +10,9 @@ class AuthViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Listen to auth state changes
     currentUser.bindStream(_auth.authStateChanges());
   }
 
-  // Login with email and password
   Future<void> login(String email, String password, {String role = 'user'}) async {
     if (!email.contains("@")) {
       Get.snackbar("Error", "Enter valid Email");
@@ -40,7 +38,6 @@ class AuthViewModel extends GetxController {
     }
   }
 
-  // Signup with email and password
   Future<void> signup(String email, String password, String confirmPassword, {String role = 'user'}) async {
     if (!email.contains("@")) {
       Get.snackbar("Error", "Enter valid Email");
