@@ -4,12 +4,6 @@ import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'app/themes/app_theme.dart';
 
-// Controllers
-import 'modules/auth/viewmodels/auth_controller.dart';
-
-// Repository
-import 'data/repositories/mock_repository.dart';
-
 void main() {
   runApp(const ClothHubApp());
 }

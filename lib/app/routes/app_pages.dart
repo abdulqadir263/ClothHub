@@ -7,7 +7,7 @@ import 'app_routes.dart';
 import '../../modules/auth/views/role_selection_view.dart';
 import '../../modules/auth/views/login_view.dart';
 import '../../modules/auth/views/signup_view.dart';
-import '../../modules/auth/views/forgot_password_view.dart';
+import '../../modules/auth/views/forget_password.dart';
 import '../../modules/auth/auth_binding.dart';
 
 // ---------- USER ----------

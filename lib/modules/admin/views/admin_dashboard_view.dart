@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../app/themes/app_theme.dart';
-import '../../auth/viewmodels/auth_controller.dart';
 
 class AdminDashboardView extends StatelessWidget {
   const AdminDashboardView({super.key});
