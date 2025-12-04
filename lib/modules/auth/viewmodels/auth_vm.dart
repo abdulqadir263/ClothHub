@@ -92,6 +92,28 @@ class AuthViewModel extends GetxController {
     await _auth.signOut();
   }
 
+  // Navigate after successful login based on role
+  void navigateAfterLogin(String role) {
+    if (isUserLoggedIn()) {
+      if (role == 'admin') {
+        Get.offAllNamed('/admin-dashboard');
+      } else {
+        Get.offAllNamed('/user-home');
+      }
+    }
+  }
+
+  // Navigate after successful signup based on role
+  void navigateAfterSignup(String role) {
+    if (isUserLoggedIn()) {
+      if (role == 'admin') {
+        Get.offAllNamed('/admin-dashboard');
+      } else {
+        Get.offAllNamed('/user-home');
+      }
+    }
+  }
+
   // Check if user is logged in
   bool isUserLoggedIn() {
     return _auth.currentUser != null;

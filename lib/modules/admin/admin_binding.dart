@@ -4,6 +4,9 @@ import '../auth/viewmodels/auth_vm.dart';
 class AdminBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<AuthViewModel>(() => AuthViewModel());
+    // Ensure AuthViewModel singleton exists
+    if (!Get.isRegistered<AuthViewModel>()) {
+      Get.put<AuthViewModel>(AuthViewModel(), permanent: true);
+    }
   }
 }

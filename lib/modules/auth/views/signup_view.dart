@@ -16,6 +16,7 @@ class _SignupViewState extends State<SignupView> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
@@ -102,7 +103,7 @@ class _SignupViewState extends State<SignupView> {
             ),
             const SizedBox(height: 20),
             TextField(
-              obscureText: _obscurePassword,
+              obscureText: _obscureConfirmPassword,
               controller: confirmPasswordController,
               decoration: InputDecoration(
                 labelText: "Confirm Password",
@@ -110,11 +111,11 @@ class _SignupViewState extends State<SignupView> {
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
                   ),
                   onPressed: () {
                     setState(() {
-                      _obscurePassword = !_obscurePassword;
+                      _obscureConfirmPassword = !_obscureConfirmPassword;
                     });
                   },
                 ),
@@ -141,13 +142,7 @@ class _SignupViewState extends State<SignupView> {
                             confirmPasswordController.text,
                           );
                           // Navigate based on role after successful signup
-                          if (authViewModel.isUserLoggedIn()) {
-                            if (role == 'admin') {
-                              Get.offAllNamed(AppRoutes.adminDashboard);
-                            } else {
-                              Get.offAllNamed(AppRoutes.userHome);
-                            }
-                          }
+                          authViewModel.navigateAfterSignup(role);
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),

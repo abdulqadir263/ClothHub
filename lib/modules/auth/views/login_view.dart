@@ -111,13 +111,7 @@ class _LoginViewState extends State<LoginView> {
                             passwordController.text,
                           );
                           // Navigate based on role after successful login
-                          if (authViewModel.isUserLoggedIn()) {
-                            if (role == 'admin') {
-                              Get.offAllNamed(AppRoutes.adminDashboard);
-                            } else {
-                              Get.offAllNamed(AppRoutes.userHome);
-                            }
-                          }
+                          authViewModel.navigateAfterLogin(role);
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
