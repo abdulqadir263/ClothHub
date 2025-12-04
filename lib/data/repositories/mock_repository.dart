@@ -15,17 +15,15 @@ class MockRepository {
     await Future.delayed(const Duration(milliseconds: 500));
     
     // Find user by email
-    final user = _users.firstWhere(
-      (u) => u.email.toLowerCase() == email.toLowerCase(),
-      orElse: () => UserModel(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        name: email.split('@')[0],
-        email: email,
-        isAdmin: false,
-      ),
-    );
-    
-    return user;
+    try {
+      final user = _users.firstWhere(
+        (u) => u.email.toLowerCase() == email.toLowerCase(),
+      );
+      return user;
+    } catch (e) {
+      // User not found, return null for invalid credentials
+      return null;
+    }
   }
 
   Future<UserModel?> signup(String name, String email, String password) async {

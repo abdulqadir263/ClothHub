@@ -22,7 +22,7 @@ class UserHomeView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              authController.currentUser.value = null;
+              authController.logout();
               Get.offAllNamed(AppRoutes.roleSelection);
             },
           ),

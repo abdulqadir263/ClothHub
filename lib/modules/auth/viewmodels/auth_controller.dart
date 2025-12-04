@@ -114,6 +114,13 @@ class AuthController extends GetxController {
     }
   }
 
+  void logout() {
+    currentUser.value = null;
+    emailController.clear();
+    passwordController.clear();
+    nameController.clear();
+  }
+
   @override
   void onClose() {
     emailController.dispose();
