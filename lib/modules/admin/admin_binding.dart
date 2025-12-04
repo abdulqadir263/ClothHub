@@ -1,9 +1,8 @@
-// import 'package:get/get.dart';
-// import 'viewmodels/admin_controller.dart';
-//
-// class AdminBinding extends Bindings {
-//   @override
-//   void dependencies() {
-//     Get.lazyPut<AdminController>(() => AdminController());
-//   }
-// }
+import 'package:get/get.dart';
+
+class AdminBinding extends Bindings {
+  @override
+  void dependencies() {
+    // No specific controllers needed for simple admin dashboard
+  }
+}
