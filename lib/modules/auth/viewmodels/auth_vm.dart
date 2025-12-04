@@ -21,7 +21,7 @@ class AuthViewModel extends GetxController {
       return;
     }
     if (password.length < 6) {
-      Get.snackbar("Error", "Password must be of 6 characters");
+      Get.snackbar("Error", "Password must be at least 6 characters");
       return;
     }
 
@@ -47,7 +47,7 @@ class AuthViewModel extends GetxController {
       return;
     }
     if (password.length < 6) {
-      Get.snackbar("Error", "Password must be of 6 characters");
+      Get.snackbar("Error", "Password must be at least 6 characters");
       return;
     }
     if (password != confirmPassword) {
