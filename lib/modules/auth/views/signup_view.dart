@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../app/routes/app_routes.dart';
 import '../../../app/themes/app_theme.dart';
-import '../viewmodels/auth_vm.dart';
+import '../viewmodels/signup_viewmodel.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({super.key});
@@ -12,6 +11,7 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
@@ -28,8 +28,7 @@ class _SignupViewState extends State<SignupView> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthViewModel authViewModel = Get.find<AuthViewModel>();
-    final String role = Get.arguments ?? 'user';
+    final SignupViewModel viewModel = Get.find<SignupViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -38,6 +37,7 @@ class _SignupViewState extends State<SignupView> {
         backgroundColor: AppTheme.primary,
         foregroundColor: Colors.white,
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -45,19 +45,23 @@ class _SignupViewState extends State<SignupView> {
           children: [
             const SizedBox(height: 40),
             Icon(
-              role == 'admin' ? Icons.admin_panel_settings : Icons.person,
+              Icons.person,
               size: 80,
               color: AppTheme.primary,
             ),
+
             const SizedBox(height: 20),
-            Text(
-              "Sign Up as ${role.capitalize}",
-              style: const TextStyle(
+
+            const Text(
+              "Sign Up",
+              style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
+
             const SizedBox(height: 40),
+
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -74,7 +78,9 @@ class _SignupViewState extends State<SignupView> {
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
+
             TextField(
               obscureText: _obscurePassword,
               controller: passwordController,
@@ -92,6 +98,7 @@ class _SignupViewState extends State<SignupView> {
                     });
                   },
                 ),
+
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -101,7 +108,9 @@ class _SignupViewState extends State<SignupView> {
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
+
             TextField(
               obscureText: _obscureConfirmPassword,
               controller: confirmPasswordController,
@@ -119,6 +128,7 @@ class _SignupViewState extends State<SignupView> {
                     });
                   },
                 ),
+
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -128,19 +138,20 @@ class _SignupViewState extends State<SignupView> {
                 ),
               ),
             ),
+
             const SizedBox(height: 30),
+
             Obx(() {
-              return authViewModel.isLoading.value
+              return viewModel.isLoading.value
                   ? const CircularProgressIndicator()
                   : SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () async {
-                          await authViewModel.signup(
+                          await viewModel.signup(
                             emailController.text,
                             passwordController.text,
                             confirmPasswordController.text,
-                            role: role,
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -158,6 +169,7 @@ class _SignupViewState extends State<SignupView> {
                       ),
                     );
             }),
+
             const SizedBox(height: 15),
             TextButton(
               onPressed: () {

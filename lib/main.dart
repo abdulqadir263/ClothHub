@@ -5,12 +5,14 @@ import 'firebase_options.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'app/themes/app_theme.dart';
+import 'modules/cart/cart_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Get.put(CartViewModel(), permanent: true);
   runApp(const ClothHubApp());
 }
 
@@ -23,7 +25,7 @@ class ClothHubApp extends StatelessWidget {
       title: 'ClothHub',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      initialRoute: AppRoutes.roleSelection,
+      initialRoute: AppRoutes.login,
       getPages: AppPages.pages,
     );
   }

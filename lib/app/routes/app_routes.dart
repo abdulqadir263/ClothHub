@@ -1,13 +1,15 @@
 class AppRoutes {
-  // ---------- AUTH ----------
-  static const roleSelection = '/role-selection';
   static const login = '/login';
-  static const signup = '/views';
+  static const signup = '/signup';
   static const forgotPassword = '/forgot-password';
-
-  // ---------- USER ----------
+  static const profile = '/profile';
   static const userHome = '/user-home';
-
-  // ---------- ADMIN ----------
   static const adminDashboard = '/admin-dashboard';
+  static const addProduct = '/add-product';
+  static const productList = '/product-list';
+  static const productDetail = '/product-detail';
+  static const cart = '/cart';
+  static const checkout = '/checkout';
+  static const orders = '/orders';
+  static const adminOrders = '/admin-orders';
 }

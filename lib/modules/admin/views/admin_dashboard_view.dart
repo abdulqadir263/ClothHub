@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../app/themes/app_theme.dart';
-import '../../auth/viewmodels/auth_vm.dart';
+import '../admin_viewmodel.dart';
 
 class AdminDashboardView extends StatelessWidget {
   const AdminDashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AuthViewModel authViewModel = Get.find<AuthViewModel>();
+    final AdminViewModel viewModel = Get.find<AdminViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -22,46 +22,97 @@ class AdminDashboardView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              authViewModel.logout();
-              Get.offAllNamed(AppRoutes.roleSelection);
+              viewModel.logout();
+              Get.offAllNamed(AppRoutes.login);
             },
           ),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.admin_panel_settings,
-                size: 100,
-                color: AppTheme.primary.withOpacity(0.5),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'Admin Dashboard',
-                style: TextStyle(
-                  fontSize: 24,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Obx(() {
+              final user = viewModel.currentUser.value;
+              final userEmail = user?.email ?? 'Admin';
+              return Text(
+                'Welcome, $userEmail',
+                style: const TextStyle(
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
+              );
+            }),
+
+            const SizedBox(height: 30),
+
+            const Text(
+              'Manage Store',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
               ),
-              const SizedBox(height: 12),
-              Obx(() {
-                final user = authViewModel.currentUser.value;
-                final userEmail = user?.email ?? 'Admin';
-                return Text(
-                  'Welcome, $userEmail',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[700],
-                  ),
-                );
-              }),
-            ],
+            ),
+
+            const SizedBox(height: 16),
+
+            _buildDashboardCard(
+              'Add Product',
+              Icons.add_box_outlined,
+              Colors.green,
+              () => Get.toNamed('/add-product'),
+            ),
+
+            _buildDashboardCard(
+              'View Products',
+              Icons.inventory_2_outlined,
+              Colors.blue,
+              () => Get.toNamed('/product-list'),
+            ),
+
+            _buildDashboardCard(
+              'Manage Orders',
+              Icons.receipt_long_outlined,
+              Colors.orange,
+              () => Get.toNamed('/admin-orders'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDashboardCard(
+    String title,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(16),
+        leading: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, color: color, size: 28),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
           ),
         ),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: onTap,
       ),
     );
   }

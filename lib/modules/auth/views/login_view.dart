@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../app/themes/app_theme.dart';
-import '../viewmodels/auth_vm.dart';
+import '../viewmodels/login_viewmodel.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -12,6 +12,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _obscurePassword = true;
@@ -25,8 +26,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthViewModel authViewModel = Get.find<AuthViewModel>();
-    final String role = Get.arguments ?? 'user';
+    final LoginViewModel viewModel = Get.find<LoginViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -35,6 +35,7 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: AppTheme.primary,
         foregroundColor: Colors.white,
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -42,19 +43,23 @@ class _LoginViewState extends State<LoginView> {
           children: [
             const SizedBox(height: 40),
             Icon(
-              role == 'admin' ? Icons.admin_panel_settings : Icons.person,
+              Icons.person,
               size: 80,
               color: AppTheme.primary,
             ),
+
             const SizedBox(height: 20),
-            Text(
-              "Login as ${role.capitalize}",
-              style: const TextStyle(
+
+            const Text(
+              "Login",
+              style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
+
             const SizedBox(height: 40),
+
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -65,13 +70,16 @@ class _LoginViewState extends State<LoginView> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
+
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: 16,
                   horizontal: 12,
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
+
             TextField(
               obscureText: _obscurePassword,
               controller: passwordController,
@@ -89,6 +97,7 @@ class _LoginViewState extends State<LoginView> {
                     });
                   },
                 ),
+
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -98,18 +107,19 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
+
             Obx(() {
-              return authViewModel.isLoading.value
+              return viewModel.isLoading.value
                   ? const CircularProgressIndicator()
                   : SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () async {
-                          await authViewModel.login(
+                          await viewModel.login(
                             emailController.text,
                             passwordController.text,
-                            role: role,
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -127,17 +137,20 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     );
             }),
+
             const SizedBox(height: 15),
             TextButton(
               onPressed: () {
-                Get.toNamed(AppRoutes.signup, arguments: role);
+                Get.toNamed(AppRoutes.signup);
               },
               child: const Text(
                 "Don't have an account? Sign Up",
                 style: TextStyle(fontSize: 16),
               ),
             ),
+
             const SizedBox(height: 10),
+
             TextButton(
               onPressed: () {
                 Get.toNamed(AppRoutes.forgotPassword);

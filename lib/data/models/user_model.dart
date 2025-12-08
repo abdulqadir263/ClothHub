@@ -1,25 +1,31 @@
-class AppUser {
+class UserModel {
   final String uid;
   final String email;
-  final String username;
-  final String? contact;
-  final String? location;
+  final String fullName;
+  final String gender;
+  final int age;
+  final String address;
+  final String phoneNumber;
 
-  AppUser({
+  UserModel({
     required this.uid,
     required this.email,
-    required this.username,
-    this.contact,
-    this.location,
+    this.fullName = '',
+    this.gender = '',
+    this.age = 0,
+    this.address = '',
+    this.phoneNumber = '',
   });
 
-  factory AppUser.fromMap(Map<String, dynamic> map) {
-    return AppUser(
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
       uid: map['uid'] ?? '',
       email: map['email'] ?? '',
-      username: map['username'] ?? '',
-      contact: map['contact'],
-      location: map['location'],
+      fullName: map['fullName'] ?? '',
+      gender: map['gender'] ?? '',
+      age: map['age'] ?? 0,
+      address: map['address'] ?? '',
+      phoneNumber: map['phoneNumber'] ?? '',
     );
   }
 
@@ -27,9 +33,12 @@ class AppUser {
     return {
       'uid': uid,
       'email': email,
-      'username': username,
-      'contact': contact,
-      'location': location,
+      'fullName': fullName,
+      'gender': gender,
+      'age': age,
+      'address': address,
+      'phoneNumber': phoneNumber,
     };
   }
 }
+

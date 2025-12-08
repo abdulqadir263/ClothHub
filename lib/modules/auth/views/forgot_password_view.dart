@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app/themes/app_theme.dart';
-import '../viewmodels/auth_vm.dart';
+import '../viewmodels/forgot_password_viewmodel.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({super.key});
@@ -21,7 +21,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthViewModel authViewModel = Get.find<AuthViewModel>();
+    final ForgotPasswordViewModel viewModel = Get.find<ForgotPasswordViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -30,6 +30,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         backgroundColor: AppTheme.primary,
         foregroundColor: Colors.white,
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -40,6 +41,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               size: 80,
               color: AppTheme.primary,
             ),
+
             const SizedBox(height: 20),
             const Text(
               "Reset Password",
@@ -48,16 +50,20 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+
             const SizedBox(height: 10),
+
             const Text(
-              "Enter your email address and we'll send you a link to reset your password.",
+              "Enter your email address to get a link to reset your password.",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
               ),
             ),
+
             const SizedBox(height: 40),
+
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -68,22 +74,26 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
+
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: 16,
                   horizontal: 12,
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
+
             Obx(() {
-              return authViewModel.isLoading.value
+              return viewModel.isLoading.value
                   ? const CircularProgressIndicator()
                   : SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          authViewModel.resetPassword(emailController.text);
+                          viewModel.resetPassword(emailController.text);
                         },
+
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           backgroundColor: AppTheme.primary,
@@ -92,6 +102,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
+
                         child: const Text(
                           "SEND RESET LINK",
                           style: TextStyle(fontSize: 16),
@@ -99,7 +110,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       ),
                     );
             }),
+
             const SizedBox(height: 15),
+
             TextButton(
               onPressed: () {
                 Get.back();
