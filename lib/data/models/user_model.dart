@@ -17,7 +17,8 @@ class UserModel {
     this.phoneNumber = '',
   });
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromMap(Map<String, dynamic> map)
+  {
     return UserModel(
       uid: map['uid'] ?? '',
       email: map['email'] ?? '',
@@ -40,5 +41,6 @@ class UserModel {
       'phoneNumber': phoneNumber,
     };
   }
+
 }
 

@@ -8,7 +8,8 @@ class SignupViewModel extends GetxController {
 
   var isLoading = false.obs;
 
-  Future<void> signup(String email, String password, String confirmPassword) async {
+  Future<void> signup(String email, String password, String confirmPassword) async
+  {
     if (!email.contains("@")) {
       Get.snackbar("Error", "Enter valid Email");
       return;
@@ -34,9 +35,11 @@ class SignupViewModel extends GetxController {
     }
   }
 
-  void navigateAfterSignup(String email) {
+  void navigateAfterSignup(String email)
+  {
     if (_authRepo.isLoggedIn) {
-      if (AppConstants.adminEmails.contains(email.toLowerCase().trim())) {
+      if (AppConstants.adminEmails.contains(email.toLowerCase().trim()))
+      {
         Get.offAllNamed('/admin-dashboard');
       } else {
         Get.offAllNamed('/profile');

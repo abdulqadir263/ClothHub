@@ -9,7 +9,8 @@ class LoginViewModel extends GetxController {
 
   var isLoading = false.obs;
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(String email, String password) async
+  {
     if (!email.contains("@")) {
       Get.snackbar("Error", "Enter valid Email");
       return;
@@ -31,7 +32,8 @@ class LoginViewModel extends GetxController {
     }
   }
 
-  void navigateAfterLogin(String email) {
+  void navigateAfterLogin(String email)
+  {
     if (_authRepo.isLoggedIn) {
       if (AppConstants.adminEmails.contains(email.toLowerCase().trim())) {
         Get.offAllNamed('/admin-dashboard');

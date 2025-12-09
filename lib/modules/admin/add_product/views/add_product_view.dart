@@ -11,12 +11,14 @@ class AddProductView extends StatefulWidget {
 }
 
 class _AddProductViewState extends State<AddProductView> {
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
 
   @override
-  void dispose() {
+  void dispose()
+  {
     nameController.dispose();
     descriptionController.dispose();
     priceController.dispose();
@@ -25,6 +27,7 @@ class _AddProductViewState extends State<AddProductView> {
 
   @override
   Widget build(BuildContext context) {
+
     final AddProductViewModel viewModel = Get.find<AddProductViewModel>();
 
     return Scaffold(
@@ -34,6 +37,7 @@ class _AddProductViewState extends State<AddProductView> {
         backgroundColor: AppTheme.primary,
         foregroundColor: Colors.white,
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -61,6 +65,7 @@ class _AddProductViewState extends State<AddProductView> {
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.grey),
                 ),
+
                 child: viewModel.selectedImage.value != null
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(10),
@@ -69,6 +74,7 @@ class _AddProductViewState extends State<AddProductView> {
                           fit: BoxFit.cover,
                         ),
                       )
+
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

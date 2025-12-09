@@ -41,7 +41,9 @@ class _LoginViewState extends State<LoginView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             const SizedBox(height: 40),
+
             Icon(
               Icons.person,
               size: 80,

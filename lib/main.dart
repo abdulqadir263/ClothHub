@@ -25,7 +25,7 @@ class ClothHubApp extends StatelessWidget {
       title: 'ClothHub',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
     );
   }

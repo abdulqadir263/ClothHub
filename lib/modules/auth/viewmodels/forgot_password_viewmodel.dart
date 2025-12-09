@@ -7,7 +7,8 @@ class ForgotPasswordViewModel extends GetxController {
 
   var isLoading = false.obs;
 
-  Future<void> resetPassword(String email) async {
+  Future<void> resetPassword(String email) async
+  {
     if (!email.contains("@")) {
       Get.snackbar("Error", "Enter valid Email");
       return;
