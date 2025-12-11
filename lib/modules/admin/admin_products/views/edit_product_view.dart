@@ -7,6 +7,7 @@ import '../../../../data/models/product_model.dart';
 import '../../../../data/repositories/product_repository.dart';
 import '../admin_products_viewmodel.dart';
 
+/// Edit Product View - Form to update existing products
 class EditProductView extends StatefulWidget {
   final ProductModel product;
 
@@ -17,8 +18,8 @@ class EditProductView extends StatefulWidget {
 }
 
 class _EditProductViewState extends State<EditProductView> {
-  final ProductRepository _productRepo = Get.find<ProductRepository>();
-  final ImagePicker _picker = ImagePicker();
+  final _productRepo = Get.find<ProductRepository>();
+  final _picker = ImagePicker();
 
   late TextEditingController nameController;
   late TextEditingController descriptionController;
@@ -47,13 +48,12 @@ class _EditProductViewState extends State<EditProductView> {
   Future<void> pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      setState(() {
-        selectedImage = File(image.path);
-      });
+      setState(() => selectedImage = File(image.path));
     }
   }
 
   Future<void> updateProduct() async {
+    // Validation
     if (nameController.text.isEmpty) {
       Get.snackbar('Error', 'Please enter product name');
       return;
@@ -70,12 +70,13 @@ class _EditProductViewState extends State<EditProductView> {
     setState(() => isLoading = true);
 
     try {
+      // Upload new image if selected
       String imageUrl = widget.product.imageUrl;
-
       if (selectedImage != null) {
         imageUrl = await _productRepo.uploadImageToCloudinary(selectedImage!);
       }
 
+      // Update product data
       final data = {
         'name': nameController.text,
         'description': descriptionController.text,
@@ -85,7 +86,6 @@ class _EditProductViewState extends State<EditProductView> {
       };
 
       await _productRepo.updateProduct(widget.product.id, data);
-
       Get.find<AdminProductsViewModel>().fetchAllProducts();
       Get.back();
       Get.snackbar('Success', 'Product updated');
@@ -110,155 +110,78 @@ class _EditProductViewState extends State<EditProductView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GestureDetector(
-              onTap: pickImage,
-              child: Container(
-                height: 180,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.grey[300]!),
-                ),
-                child: selectedImage != null
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.file(
-                          selectedImage!,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            Image.network(
-                              widget.product.imageUrl,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return const Center(
-                                  child: Icon(Icons.image_not_supported, size: 50),
-                                );
-                              },
-                            ),
-                            Container(
-                              color: Colors.black26,
-                              child: const Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.camera_alt, color: Colors.white, size: 36),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      'Tap to change image',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-              ),
-            ),
+            _buildImagePicker(),
             const SizedBox(height: 20),
-            _buildTextField(
-              controller: nameController,
-              label: 'Product Name',
-              icon: Icons.shopping_bag_outlined,
-            ),
+            _buildTextField(nameController, 'Product Name', Icons.shopping_bag_outlined),
             const SizedBox(height: 16),
-            _buildTextField(
-              controller: descriptionController,
-              label: 'Description',
-              icon: Icons.description_outlined,
-              maxLines: 3,
-            ),
+            _buildTextField(descriptionController, 'Description', Icons.description_outlined, maxLines: 3),
             const SizedBox(height: 16),
-            _buildTextField(
-              controller: priceController,
-              label: 'Price (Rs.)',
-              icon: Icons.attach_money,
-              keyboardType: TextInputType.number,
-            ),
+            _buildTextField(priceController, 'Price (Rs.)', Icons.attach_money, keyboardType: TextInputType.number),
             const SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-              child: DropdownButtonFormField<String>(
-                value: category,
-                decoration: InputDecoration(
-                  labelText: 'Category',
-                  prefixIcon: const Icon(Icons.category_outlined),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-                items: const [
-                  DropdownMenuItem(value: 'Male', child: Text('Male')),
-                  DropdownMenuItem(value: 'Female', child: Text('Female')),
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() => category = value);
-                  }
-                },
-              ),
-            ),
+            _buildCategoryDropdown(),
             const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: isLoading ? null : updateProduct,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: AppTheme.primary,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Text(
-                        'UPDATE PRODUCT',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-              ),
-            ),
+            _buildUpdateButton(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
+  /// Image picker with current image preview
+  Widget _buildImagePicker() {
+    return GestureDetector(
+      onTap: pickImage,
+      child: Container(
+        height: 180,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey[300]!),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: selectedImage != null
+              ? Image.file(selectedImage!, fit: BoxFit.cover)
+              : _buildCurrentImageWithOverlay(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCurrentImageWithOverlay() {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Image.network(
+          widget.product.imageUrl,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return const Center(child: Icon(Icons.image_not_supported, size: 50));
+          },
+        ),
+        Container(
+          color: Colors.black26,
+          child: const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.camera_alt, color: Colors.white, size: 36),
+                SizedBox(height: 8),
+                Text('Tap to change image', style: TextStyle(color: Colors.white)),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Styled text field
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label,
+    IconData icon, {
     int maxLines = 1,
     TextInputType keyboardType = TextInputType.text,
   }) {
@@ -267,10 +190,7 @@ class _EditProductViewState extends State<EditProductView> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-          ),
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10),
         ],
       ),
       child: TextField(
@@ -287,6 +207,65 @@ class _EditProductViewState extends State<EditProductView> {
           filled: true,
           fillColor: Colors.white,
         ),
+      ),
+    );
+  }
+
+  /// Category dropdown
+  Widget _buildCategoryDropdown() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10),
+        ],
+      ),
+      child: DropdownButtonFormField<String>(
+        value: category,
+        decoration: InputDecoration(
+          labelText: 'Category',
+          prefixIcon: const Icon(Icons.category_outlined),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+        items: const [
+          DropdownMenuItem(value: 'Male', child: Text('Male')),
+          DropdownMenuItem(value: 'Female', child: Text('Female')),
+        ],
+        onChanged: (value) {
+          if (value != null) setState(() => category = value);
+        },
+      ),
+    );
+  }
+
+  /// Update button with loading state
+  Widget _buildUpdateButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: isLoading ? null : updateProduct,
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: AppTheme.primary,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+        child: isLoading
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+              )
+            : const Text(
+                'UPDATE PRODUCT',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
       ),
     );
   }
