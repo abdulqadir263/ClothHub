@@ -17,8 +17,7 @@ class ProductModel {
     required this.createdAt,
   });
 
-  factory ProductModel.fromMap(Map<String, dynamic> map, String docId)
-  {
+  factory ProductModel.fromMap(Map<String, dynamic> map, String docId) {
     return ProductModel(
       id: docId,
       name: map['name'] ?? '',
@@ -30,8 +29,7 @@ class ProductModel {
     );
   }
 
-  Map<String, dynamic> toMap()
-  {
+  Map<String, dynamic> toMap() {
     return {
       'name': name,
       'description': description,
@@ -42,4 +40,3 @@ class ProductModel {
     };
   }
 }
-

@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/utils/constants.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/user_repository.dart';
 
 class AuthController extends GetxController {
-  final AuthRepository _authRepo = AuthRepository();
+  final AuthRepository authRepo = Get.find<AuthRepository>();
+  final UserRepository userRepo = Get.find<UserRepository>();
 
   var isLoading = true.obs;
 
@@ -18,14 +20,14 @@ class AuthController extends GetxController {
   void checkAuthStatus() async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    User? user = _authRepo.currentUser;
+    User? user = authRepo.currentUser;
 
     if (user != null) {
       String email = user.email ?? '';
       if (AppConstants.adminEmails.contains(email.toLowerCase().trim())) {
         Get.offAllNamed(AppRoutes.adminDashboard);
       } else {
-        bool profileComplete = await _authRepo.isProfileComplete(user.uid);
+        bool profileComplete = await userRepo.checkProfileCompletion(user.uid);
         if (profileComplete) {
           Get.offAllNamed(AppRoutes.userHome);
         } else {
@@ -39,4 +41,3 @@ class AuthController extends GetxController {
     isLoading.value = false;
   }
 }
-

@@ -5,9 +5,8 @@ import '../../../data/models/product_model.dart';
 import '../../../data/repositories/product_repository.dart';
 
 class AddProductViewModel extends GetxController {
-
-  final ProductRepository _productRepo = ProductRepository();
-  final ImagePicker _picker = ImagePicker();
+  final ProductRepository productRepo = Get.find<ProductRepository>();
+  final ImagePicker picker = ImagePicker();
 
   var isLoading = false.obs;
   var selectedImage = Rxn<File>();
@@ -16,31 +15,26 @@ class AddProductViewModel extends GetxController {
   var productPrice = 0.0.obs;
   var productCategory = 'Male'.obs;
 
-  Future<void> pickImage() async
-  {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> pickImage() async {
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       selectedImage.value = File(image.path);
     }
   }
 
-  Future<void> addProduct() async
-  {
+  Future<void> addProduct() async {
     if (productName.value.isEmpty) {
       Get.snackbar('Error', 'Please enter product name');
       return;
     }
-
     if (productDescription.value.isEmpty) {
       Get.snackbar('Error', 'Please enter product description');
       return;
     }
-
     if (productPrice.value <= 0) {
       Get.snackbar('Error', 'Please enter valid price');
       return;
     }
-
     if (selectedImage.value == null) {
       Get.snackbar('Error', 'Please select an image');
       return;
@@ -49,7 +43,7 @@ class AddProductViewModel extends GetxController {
     isLoading.value = true;
 
     try {
-      final imageUrl = await _productRepo.uploadImageToCloudinary(
+      final imageUrl = await productRepo.uploadImageToCloudinary(
         selectedImage.value!,
       );
 
@@ -68,7 +62,7 @@ class AddProductViewModel extends GetxController {
         createdAt: DateTime.now(),
       );
 
-      await _productRepo.addProduct(product);
+      await productRepo.addProduct(product);
       Get.snackbar('Success', 'Product added successfully');
       clearForm();
     } catch (e) {
@@ -85,6 +79,4 @@ class AddProductViewModel extends GetxController {
     productCategory.value = 'Male';
     selectedImage.value = null;
   }
-
 }
-

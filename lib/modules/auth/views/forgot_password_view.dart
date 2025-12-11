@@ -30,40 +30,24 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         backgroundColor: AppTheme.primary,
         foregroundColor: Colors.white,
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.lock_reset,
-              size: 80,
-              color: AppTheme.primary,
-            ),
-
+            Icon(Icons.lock_reset, size: 80, color: AppTheme.primary),
             const SizedBox(height: 20),
             const Text(
               "Reset Password",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 10),
-
             const Text(
               "Enter your email address to get a link to reset your password.",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.grey),
             ),
-
             const SizedBox(height: 40),
-
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -74,16 +58,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 12,
-                ),
               ),
             ),
-
             const SizedBox(height: 20),
-
             Obx(() {
               return viewModel.isLoading.value
                   ? const CircularProgressIndicator()
@@ -93,7 +70,6 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                         onPressed: () {
                           viewModel.resetPassword(emailController.text);
                         },
-
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           backgroundColor: AppTheme.primary,
@@ -102,7 +78,6 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-
                         child: const Text(
                           "SEND RESET LINK",
                           style: TextStyle(fontSize: 16),
@@ -110,13 +85,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       ),
                     );
             }),
-
             const SizedBox(height: 15),
-
             TextButton(
-              onPressed: () {
-                Get.back();
-              },
+              onPressed: () => Get.back(),
               child: const Text(
                 "Back to Login",
                 style: TextStyle(fontSize: 16),

@@ -13,8 +13,7 @@ class CartItemModel {
     this.quantity = 1,
   });
 
-  factory CartItemModel.fromMap(Map<String, dynamic> map)
-  {
+  factory CartItemModel.fromMap(Map<String, dynamic> map) {
     return CartItemModel(
       productId: map['productId'] ?? '',
       name: map['name'] ?? '',
@@ -24,8 +23,7 @@ class CartItemModel {
     );
   }
 
-  Map<String, dynamic> toMap()
-  {
+  Map<String, dynamic> toMap() {
     return {
       'productId': productId,
       'name': name,
@@ -37,4 +35,3 @@ class CartItemModel {
 
   double get totalPrice => price * quantity;
 }
-

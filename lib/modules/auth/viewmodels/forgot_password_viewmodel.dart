@@ -3,12 +3,11 @@ import 'package:get/get.dart';
 import '../../../data/repositories/auth_repository.dart';
 
 class ForgotPasswordViewModel extends GetxController {
-  final AuthRepository _authRepo = AuthRepository();
+  final AuthRepository authRepo = Get.find<AuthRepository>();
 
   var isLoading = false.obs;
 
-  Future<void> resetPassword(String email) async
-  {
+  Future<void> resetPassword(String email) async {
     if (!email.contains("@")) {
       Get.snackbar("Error", "Enter valid Email");
       return;
@@ -16,7 +15,7 @@ class ForgotPasswordViewModel extends GetxController {
 
     isLoading.value = true;
     try {
-      await _authRepo.sendPasswordResetEmail(email);
+      await authRepo.sendPasswordResetEmail(email);
       Get.snackbar("Reset Password", "An email has been sent to you at $email");
       Get.back();
     } on FirebaseAuthException catch (e) {

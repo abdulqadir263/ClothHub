@@ -11,12 +11,11 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
+  bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
 
   @override
   void dispose() {
@@ -37,31 +36,19 @@ class _SignupViewState extends State<SignupView> {
         backgroundColor: AppTheme.primary,
         foregroundColor: Colors.white,
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 40),
-            Icon(
-              Icons.person,
-              size: 80,
-              color: AppTheme.primary,
-            ),
-
+            Icon(Icons.person, size: 80, color: AppTheme.primary),
             const SizedBox(height: 20),
-
             const Text(
               "Sign Up",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 40),
-
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -72,18 +59,11 @@ class _SignupViewState extends State<SignupView> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 12,
-                ),
               ),
             ),
-
             const SizedBox(height: 20),
-
             TextField(
-              obscureText: _obscurePassword,
+              obscureText: obscurePassword,
               controller: passwordController,
               decoration: InputDecoration(
                 labelText: "Password",
@@ -91,29 +71,22 @@ class _SignupViewState extends State<SignupView> {
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    obscurePassword ? Icons.visibility : Icons.visibility_off,
                   ),
                   onPressed: () {
                     setState(() {
-                      _obscurePassword = !_obscurePassword;
+                      obscurePassword = !obscurePassword;
                     });
                   },
                 ),
-
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 12,
-                ),
               ),
             ),
-
             const SizedBox(height: 20),
-
             TextField(
-              obscureText: _obscureConfirmPassword,
+              obscureText: obscureConfirmPassword,
               controller: confirmPasswordController,
               decoration: InputDecoration(
                 labelText: "Confirm Password",
@@ -121,35 +94,28 @@ class _SignupViewState extends State<SignupView> {
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                    obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
                   ),
                   onPressed: () {
                     setState(() {
-                      _obscureConfirmPassword = !_obscureConfirmPassword;
+                      obscureConfirmPassword = !obscureConfirmPassword;
                     });
                   },
                 ),
-
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 12,
-                ),
               ),
             ),
-
             const SizedBox(height: 30),
-
             Obx(() {
               return viewModel.isLoading.value
                   ? const CircularProgressIndicator()
                   : SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () async {
-                          await viewModel.signup(
+                        onPressed: () {
+                          viewModel.signup(
                             emailController.text,
                             passwordController.text,
                             confirmPasswordController.text,
@@ -170,12 +136,9 @@ class _SignupViewState extends State<SignupView> {
                       ),
                     );
             }),
-
             const SizedBox(height: 15),
             TextButton(
-              onPressed: () {
-                Get.back();
-              },
+              onPressed: () => Get.back(),
               child: const Text(
                 "Already have an account? Login",
                 style: TextStyle(fontSize: 16),

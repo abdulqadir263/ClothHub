@@ -4,12 +4,11 @@ import '../../../app/utils/constants.dart';
 import '../../../data/repositories/auth_repository.dart';
 
 class SignupViewModel extends GetxController {
-  final AuthRepository _authRepo = AuthRepository();
+  final AuthRepository authRepo = Get.find<AuthRepository>();
 
   var isLoading = false.obs;
 
-  Future<void> signup(String email, String password, String confirmPassword) async
-  {
+  Future<void> signup(String email, String password, String confirmPassword) async {
     if (!email.contains("@")) {
       Get.snackbar("Error", "Enter valid Email");
       return;
@@ -25,7 +24,7 @@ class SignupViewModel extends GetxController {
 
     isLoading.value = true;
     try {
-      await _authRepo.signup(email, password);
+      await authRepo.signup(email, password);
       Get.snackbar("Success", "Account created successfully");
       navigateAfterSignup(email);
     } on FirebaseAuthException catch (e) {
@@ -35,11 +34,9 @@ class SignupViewModel extends GetxController {
     }
   }
 
-  void navigateAfterSignup(String email)
-  {
-    if (_authRepo.isLoggedIn) {
-      if (AppConstants.adminEmails.contains(email.toLowerCase().trim()))
-      {
+  void navigateAfterSignup(String email) {
+    if (authRepo.isLoggedIn) {
+      if (AppConstants.adminEmails.contains(email.toLowerCase().trim())) {
         Get.offAllNamed('/admin-dashboard');
       } else {
         Get.offAllNamed('/profile');

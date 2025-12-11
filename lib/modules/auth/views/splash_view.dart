@@ -14,29 +14,17 @@ class SplashView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.shopping_bag,
-              size: 100,
-              color: Colors.blue,
+            Icon(Icons.shopping_bag, size: 100, color: Colors.blue),
+            SizedBox(height: 20),
+            Text(
+              'Stylish Clothes Center',
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
             ),
-
-            const SizedBox(height: 20),
-
-            const Text(
-              'ClothHub',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            const CircularProgressIndicator(),
+            SizedBox(height: 30),
+            CircularProgressIndicator(),
           ],
         ),
       ),
     );
   }
 }
-

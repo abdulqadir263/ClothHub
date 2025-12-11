@@ -17,11 +17,9 @@ class OrderModel {
     this.status = 'pending',
   });
 
-  factory OrderModel.fromMap(Map<String, dynamic> map, String docId)
-  {
+  factory OrderModel.fromMap(Map<String, dynamic> map, String docId) {
     List<CartItemModel> productsList = [];
-    if (map['products'] != null)
-    {
+    if (map['products'] != null) {
       productsList = (map['products'] as List)
           .map((item) => CartItemModel.fromMap(item))
           .toList();
@@ -37,8 +35,7 @@ class OrderModel {
     );
   }
 
-  Map<String, dynamic> toMap()
-  {
+  Map<String, dynamic> toMap() {
     return {
       'userId': userId,
       'products': products.map((item) => item.toMap()).toList(),
@@ -48,4 +45,3 @@ class OrderModel {
     };
   }
 }
-

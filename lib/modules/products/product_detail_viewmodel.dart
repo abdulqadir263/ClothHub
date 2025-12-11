@@ -15,7 +15,7 @@ class ProductDetailViewModel extends GetxController {
     }
   }
 
-  void addToCart() {
+  Future<void> addToCart() async {
     if (product.value == null) return;
 
     final cartViewModel = Get.find<CartViewModel>();
@@ -27,8 +27,7 @@ class ProductDetailViewModel extends GetxController {
       quantity: 1,
     );
 
-    cartViewModel.addToCart(cartItem);
+    await cartViewModel.addToCart(cartItem);
     Get.snackbar('Success', 'Added to cart');
   }
 }
-

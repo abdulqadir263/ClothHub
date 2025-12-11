@@ -3,10 +3,10 @@ import '../../data/models/cart_item_model.dart';
 import '../../data/models/order_model.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/order_repository.dart';
+import '../../data/repositories/cart_repository.dart';
 
 class CartViewModel extends GetxController {
-  final OrderRepository _orderRepo = OrderRepository();
-  final AuthRepository _authRepo = AuthRepository();
+  final CartRepository _cartRepo = Get.find<CartRepository>();
 
   var cartItems = <CartItemModel>[].obs;
   var isLoading = false.obs;
@@ -21,7 +21,33 @@ class CartViewModel extends GetxController {
 
   int get itemCount => cartItems.length;
 
-  void addToCart(CartItemModel item) {
+  String? get _userId => Get.find<AuthRepository>().currentUser?.uid;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadCart();
+  }
+
+  Future<void> loadCart() async {
+    if (_userId == null) return;
+
+    isLoading.value = true;
+    try {
+      cartItems.value = await _cartRepo.fetchCart(_userId!);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to load cart');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> addToCart(CartItemModel item) async {
+    if (_userId == null) {
+      Get.snackbar('Error', 'Please login first');
+      return;
+    }
+
     final existingIndex = cartItems.indexWhere(
       (cartItem) => cartItem.productId == item.productId,
     );
@@ -29,37 +55,63 @@ class CartViewModel extends GetxController {
     if (existingIndex >= 0) {
       cartItems[existingIndex].quantity++;
       cartItems.refresh();
+      await _cartRepo.updateQuantity(
+        _userId!,
+        item.productId,
+        cartItems[existingIndex].quantity,
+      );
     } else {
       cartItems.add(item);
+      await _cartRepo.addToCart(_userId!, item);
     }
   }
 
-  void removeFromCart(String productId) {
+  Future<void> removeFromCart(String productId) async {
+    if (_userId == null) return;
+
     cartItems.removeWhere((item) => item.productId == productId);
+    await _cartRepo.removeFromCart(_userId!, productId);
   }
 
-  void increaseQuantity(String productId) {
+  Future<void> increaseQuantity(String productId) async {
+    if (_userId == null) return;
+
     final index = cartItems.indexWhere((item) => item.productId == productId);
     if (index >= 0) {
       cartItems[index].quantity++;
       cartItems.refresh();
+      await _cartRepo.updateQuantity(
+        _userId!,
+        productId,
+        cartItems[index].quantity,
+      );
     }
   }
 
-  void decreaseQuantity(String productId) {
+  Future<void> decreaseQuantity(String productId) async {
+    if (_userId == null) return;
+
     final index = cartItems.indexWhere((item) => item.productId == productId);
     if (index >= 0) {
       if (cartItems[index].quantity > 1) {
         cartItems[index].quantity--;
         cartItems.refresh();
+        await _cartRepo.updateQuantity(
+          _userId!,
+          productId,
+          cartItems[index].quantity,
+        );
       } else {
-        removeFromCart(productId);
+        await removeFromCart(productId);
       }
     }
   }
 
-  void clearCart() {
+  Future<void> clearCart() async {
+    if (_userId == null) return;
+
     cartItems.clear();
+    await _cartRepo.clearCart(_userId!);
   }
 
   Future<void> placeOrder() async {
@@ -68,7 +120,10 @@ class CartViewModel extends GetxController {
       return;
     }
 
-    final currentUser = _authRepo.currentUser;
+    final authRepo = Get.find<AuthRepository>();
+    final orderRepo = Get.find<OrderRepository>();
+
+    final currentUser = authRepo.currentUser;
     if (currentUser == null) {
       Get.snackbar('Error', 'Please login first');
       return;
@@ -86,10 +141,9 @@ class CartViewModel extends GetxController {
         status: 'pending',
       );
 
-      await _orderRepo.createOrder(order);
-      clearCart();
+      await orderRepo.createOrder(order);
+      await clearCart();
       Get.snackbar('Success', 'Order placed successfully');
-      Get.offAllNamed('/user-home');
     } catch (e) {
       Get.snackbar('Error', 'Failed to place order');
     } finally {
@@ -97,4 +151,3 @@ class CartViewModel extends GetxController {
     }
   }
 }
-

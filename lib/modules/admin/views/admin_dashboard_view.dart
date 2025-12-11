@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../app/themes/app_theme.dart';
 import '../admin_viewmodel.dart';
+import '../add_product/views/add_product_tab_view.dart';
+import '../admin_products/views/admin_products_tab_view.dart';
+import '../admin_orders/views/admin_orders_tab_view.dart';
 
 class AdminDashboardView extends StatelessWidget {
   const AdminDashboardView({super.key});
@@ -28,92 +31,44 @@ class AdminDashboardView extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Obx(() {
-              final user = viewModel.currentUser.value;
-              final userEmail = user?.email ?? 'Admin';
-              return Text(
-                'Welcome, $userEmail',
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              );
-            }),
-
-            const SizedBox(height: 30),
-
-            const Text(
-              'Manage Store',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            _buildDashboardCard(
-              'Add Product',
-              Icons.add_box_outlined,
-              Colors.green,
-              () => Get.toNamed('/add-product'),
-            ),
-
-            _buildDashboardCard(
-              'View Products',
-              Icons.inventory_2_outlined,
-              Colors.blue,
-              () => Get.toNamed('/product-list'),
-            ),
-
-            _buildDashboardCard(
-              'Manage Orders',
-              Icons.receipt_long_outlined,
-              Colors.orange,
-              () => Get.toNamed('/admin-orders'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDashboardCard(
-    String title,
-    IconData icon,
-    Color color,
-    VoidCallback onTap,
-  ) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(16),
-        leading: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(10),
+      body: Obx(() {
+        switch (viewModel.currentTabIndex.value) {
+          case 0:
+            return const AddProductTabView();
+          case 1:
+            return const AdminProductsTabView();
+          case 2:
+            return const AdminOrdersTabView();
+          default:
+            return const AddProductTabView();
+        }
+      }),
+      bottomNavigationBar: Obx(() => NavigationBar(
+        selectedIndex: viewModel.currentTabIndex.value,
+        onDestinationSelected: (index) {
+          viewModel.changeTab(index);
+        },
+        backgroundColor: Colors.white,
+        indicatorColor: AppTheme.primary.withOpacity(0.2),
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.add_box_outlined),
+            selectedIcon: Icon(Icons.add_box, color: AppTheme.primary),
+            label: 'Add Product',
           ),
-          child: Icon(icon, color: color, size: 28),
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
+          NavigationDestination(
+            icon: Icon(Icons.inventory_2_outlined),
+            selectedIcon: Icon(Icons.inventory_2, color: AppTheme.primary),
+            label: 'Products',
           ),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: onTap,
-      ),
+          NavigationDestination(
+            icon: Icon(Icons.receipt_long_outlined),
+            selectedIcon: Icon(Icons.receipt_long, color: AppTheme.primary),
+            label: 'Orders',
+          ),
+        ],
+      )),
     );
   }
 }
+

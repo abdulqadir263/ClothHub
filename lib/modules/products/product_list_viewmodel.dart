@@ -3,7 +3,7 @@ import '../../data/models/product_model.dart';
 import '../../data/repositories/product_repository.dart';
 
 class ProductListViewModel extends GetxController {
-  final ProductRepository _productRepo = ProductRepository();
+  final ProductRepository productRepo = Get.find<ProductRepository>();
 
   var isLoading = false.obs;
   var products = <ProductModel>[].obs;
@@ -19,9 +19,9 @@ class ProductListViewModel extends GetxController {
     isLoading.value = true;
     try {
       if (selectedCategory.value == 'All') {
-        products.value = await _productRepo.getAllProducts();
+        products.value = await productRepo.getAllProducts();
       } else {
-        products.value = await _productRepo.getProductsByCategory(
+        products.value = await productRepo.getProductsByCategory(
           selectedCategory.value,
         );
       }
@@ -37,4 +37,3 @@ class ProductListViewModel extends GetxController {
     fetchProducts();
   }
 }
-

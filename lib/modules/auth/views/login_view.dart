@@ -12,10 +12,9 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _obscurePassword = true;
+  bool obscurePassword = true;
 
   @override
   void dispose() {
@@ -35,33 +34,19 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: AppTheme.primary,
         foregroundColor: Colors.white,
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
             const SizedBox(height: 40),
-
-            Icon(
-              Icons.person,
-              size: 80,
-              color: AppTheme.primary,
-            ),
-
+            Icon(Icons.person, size: 80, color: AppTheme.primary),
             const SizedBox(height: 20),
-
             const Text(
               "Login",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 40),
-
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -72,18 +57,11 @@ class _LoginViewState extends State<LoginView> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 12,
-                ),
               ),
             ),
-
             const SizedBox(height: 20),
-
             TextField(
-              obscureText: _obscurePassword,
+              obscureText: obscurePassword,
               controller: passwordController,
               decoration: InputDecoration(
                 labelText: "Password",
@@ -91,35 +69,28 @@ class _LoginViewState extends State<LoginView> {
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                    obscurePassword ? Icons.visibility : Icons.visibility_off,
                   ),
                   onPressed: () {
                     setState(() {
-                      _obscurePassword = !_obscurePassword;
+                      obscurePassword = !obscurePassword;
                     });
                   },
                 ),
-
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 12,
-                ),
               ),
             ),
-
             const SizedBox(height: 20),
-
             Obx(() {
               return viewModel.isLoading.value
                   ? const CircularProgressIndicator()
                   : SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () async {
-                          await viewModel.login(
+                        onPressed: () {
+                          viewModel.login(
                             emailController.text,
                             passwordController.text,
                           );
@@ -139,24 +110,17 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     );
             }),
-
             const SizedBox(height: 15),
             TextButton(
-              onPressed: () {
-                Get.toNamed(AppRoutes.signup);
-              },
+              onPressed: () => Get.toNamed(AppRoutes.signup),
               child: const Text(
                 "Don't have an account? Sign Up",
                 style: TextStyle(fontSize: 16),
               ),
             ),
-
             const SizedBox(height: 10),
-
             TextButton(
-              onPressed: () {
-                Get.toNamed(AppRoutes.forgotPassword);
-              },
+              onPressed: () => Get.toNamed(AppRoutes.forgotPassword),
               child: const Text(
                 "Forgot Password?",
                 style: TextStyle(fontSize: 16),

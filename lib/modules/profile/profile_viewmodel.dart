@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import '../../data/models/user_model.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/user_repository.dart';
 
 class ProfileViewModel extends GetxController {
-  final AuthRepository _authRepo = AuthRepository();
+  final AuthRepository authRepo = Get.find<AuthRepository>();
+  final UserRepository userRepo = Get.find<UserRepository>();
 
   var isLoading = false.obs;
   var fullName = ''.obs;
@@ -29,7 +31,7 @@ class ProfileViewModel extends GetxController {
     isLoading.value = true;
 
     try {
-      final currentUser = _authRepo.currentUser;
+      final currentUser = authRepo.currentUser;
       if (currentUser == null) {
         Get.snackbar('Error', 'User not logged in');
         return;
@@ -45,7 +47,7 @@ class ProfileViewModel extends GetxController {
         phoneNumber: phoneNumber.value,
       );
 
-      await _authRepo.saveUserProfile(userModel);
+      await userRepo.saveUserProfile(userModel);
       Get.snackbar('Success', 'Profile saved successfully');
       Get.offAllNamed('/user-home');
     } catch (e) {
@@ -55,4 +57,3 @@ class ProfileViewModel extends GetxController {
     }
   }
 }
-

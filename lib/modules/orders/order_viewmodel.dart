@@ -4,8 +4,8 @@ import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/order_repository.dart';
 
 class OrderViewModel extends GetxController {
-  final OrderRepository _orderRepo = OrderRepository();
-  final AuthRepository _authRepo = AuthRepository();
+  final OrderRepository orderRepo = Get.find<OrderRepository>();
+  final AuthRepository authRepo = Get.find<AuthRepository>();
 
   var orders = <OrderModel>[].obs;
   var isLoading = false.obs;
@@ -17,32 +17,16 @@ class OrderViewModel extends GetxController {
   }
 
   Future<void> fetchUserOrders() async {
-    final currentUser = _authRepo.currentUser;
+    final currentUser = authRepo.currentUser;
     if (currentUser == null) return;
 
     isLoading.value = true;
     try {
-      orders.value = await _orderRepo.getOrdersByUser(currentUser.uid);
+      orders.value = await orderRepo.getOrdersByUser(currentUser.uid);
     } catch (e) {
       Get.snackbar('Error', 'Failed to load orders');
     } finally {
       isLoading.value = false;
     }
   }
-
-  String getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return 'orange';
-      case 'processing':
-        return 'blue';
-      case 'delivered':
-        return 'green';
-      case 'cancelled':
-        return 'red';
-      default:
-        return 'grey';
-    }
-  }
 }
-
