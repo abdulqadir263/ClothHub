@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import '../../../app/utils/constants.dart';
+import '../../../app/services/auth_navigation_service.dart';
 import '../../../data/repositories/auth_repository.dart';
 
 class SignupViewModel extends GetxController {
-  final AuthRepository authRepo = Get.find<AuthRepository>();
+
+  final AuthRepository _authRepo = Get.find<AuthRepository>();
+  final AuthNavigationService _navigationService = Get.find<AuthNavigationService>();
 
   var isLoading = false.obs;
 
@@ -24,23 +26,15 @@ class SignupViewModel extends GetxController {
 
     isLoading.value = true;
     try {
-      await authRepo.signup(email, password);
+      await _authRepo.signup(email, password);
       Get.snackbar("Success", "Account created successfully");
-      navigateAfterSignup(email);
+
+      // Use centralized navigation service
+      await _navigationService.navigateBasedOnEmail(email);
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message ?? "SignUp Failed");
     } finally {
       isLoading.value = false;
-    }
-  }
-
-  void navigateAfterSignup(String email) {
-    if (authRepo.isLoggedIn) {
-      if (AppConstants.adminEmails.contains(email.toLowerCase().trim())) {
-        Get.offAllNamed('/admin-dashboard');
-      } else {
-        Get.offAllNamed('/profile');
-      }
     }
   }
 }

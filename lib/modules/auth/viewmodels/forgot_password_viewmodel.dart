@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../data/repositories/auth_repository.dart';
 
 class ForgotPasswordViewModel extends GetxController {
+
   final AuthRepository authRepo = Get.find<AuthRepository>();
 
   var isLoading = false.obs;
@@ -14,13 +15,16 @@ class ForgotPasswordViewModel extends GetxController {
     }
 
     isLoading.value = true;
+
     try {
       await authRepo.sendPasswordResetEmail(email);
       Get.snackbar("Reset Password", "An email has been sent to you at $email");
       Get.back();
-    } on FirebaseAuthException catch (e) {
+    }
+    on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message ?? "Failed to send reset password email");
-    } finally {
+    } finally
+    {
       isLoading.value = false;
     }
   }

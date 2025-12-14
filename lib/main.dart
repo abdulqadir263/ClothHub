@@ -5,6 +5,7 @@ import 'firebase_options.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'app/themes/app_theme.dart';
+import 'app/services/auth_navigation_service.dart';
 import 'data/repositories/auth_repository.dart';
 import 'data/repositories/user_repository.dart';
 import 'data/repositories/product_repository.dart';
@@ -34,6 +35,12 @@ void initDependencies() {
   Get.lazyPut(() => ProductRepository(), fenix: true);
   Get.lazyPut(() => OrderRepository(), fenix: true);
   Get.lazyPut(() => CartRepository(), fenix: true);
+
+  // Navigation Service
+  Get.lazyPut(() => AuthNavigationService(
+    Get.find<AuthRepository>(),
+    Get.find<UserRepository>(),
+  ), fenix: true);
 
   Get.put(CartViewModel(), permanent: true);
   Get.lazyPut(() => ProductListViewModel(), fenix: true);

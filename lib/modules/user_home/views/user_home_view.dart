@@ -7,6 +7,7 @@ import '../../products/views/products_tab_view.dart';
 import '../../cart/views/cart_tab_view.dart';
 import '../../orders/views/orders_tab_view.dart';
 import '../../cart/cart_viewmodel.dart';
+import '../../profile/views/user_profile_tab_view.dart';
 
 class UserHomeView extends StatelessWidget {
   const UserHomeView({super.key});
@@ -41,6 +42,8 @@ class UserHomeView extends StatelessWidget {
             return const CartTabView();
           case 2:
             return const OrdersTabView();
+          case 3:
+            return const UserProfileTabView();
           default:
             return const ProductsTabView();
         }
@@ -81,6 +84,11 @@ class UserHomeView extends StatelessWidget {
             icon: Icon(Icons.receipt_long_outlined),
             selectedIcon: Icon(Icons.receipt_long, color: AppTheme.primary),
             label: 'Orders',
+          ),
+          const NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person, color: AppTheme.primary),
+            label: 'Profile',
           ),
         ],
       )),

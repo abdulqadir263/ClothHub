@@ -4,6 +4,7 @@ import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/user_repository.dart';
 
 class ProfileViewModel extends GetxController {
+
   final AuthRepository authRepo = Get.find<AuthRepository>();
   final UserRepository userRepo = Get.find<UserRepository>();
 

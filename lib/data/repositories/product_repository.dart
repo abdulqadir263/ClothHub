@@ -1,37 +1,15 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart' as http;
-import 'package:crypto/crypto.dart';
 import '../models/product_model.dart';
+import '../services/cloudinary_service.dart';
 
 class ProductRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  static const String cloudName = 'dybx88bzo';
-  static const String apiKey = '944328244948163';
-  static const String apiSecret = 'dsoUe_Vq3MQ00kex8qsx96gfjjc';
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final CloudinaryService _cloudinaryService = CloudinaryService();
 
   Future<String> uploadImageToCloudinary(File imageFile) async {
-    final url = Uri.parse(
-      'https://api.cloudinary.com/v1_1/$cloudName/image/upload',
-    );
-
-    final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    final signatureString = 'timestamp=$timestamp$apiSecret';
-    final signature = sha1.convert(utf8.encode(signatureString)).toString();
-
-    final request = http.MultipartRequest('POST', url);
-    request.fields['api_key'] = apiKey;
-    request.fields['timestamp'] = timestamp.toString();
-    request.fields['signature'] = signature;
-    request.files.add(await http.MultipartFile.fromPath('file', imageFile.path));
-
-    final response = await request.send();
-    final responseData = await response.stream.bytesToString();
-    final jsonData = json.decode(responseData);
-
-    return jsonData['secure_url'] ?? '';
+    return await _cloudinaryService.uploadImage(imageFile);
   }
 
   Future<void> addProduct(ProductModel product) async {

@@ -11,6 +11,7 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
@@ -27,6 +28,7 @@ class _SignupViewState extends State<SignupView> {
 
   @override
   Widget build(BuildContext context) {
+
     final SignupViewModel viewModel = Get.find<SignupViewModel>();
 
     return Scaffold(
@@ -36,19 +38,24 @@ class _SignupViewState extends State<SignupView> {
         backgroundColor: AppTheme.primary,
         foregroundColor: Colors.white,
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             const SizedBox(height: 40),
+
             Icon(Icons.person, size: 80, color: AppTheme.primary),
             const SizedBox(height: 20),
             const Text(
               "Sign Up",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+
             const SizedBox(height: 40),
+
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -61,7 +68,9 @@ class _SignupViewState extends State<SignupView> {
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
+
             TextField(
               obscureText: obscurePassword,
               controller: passwordController,

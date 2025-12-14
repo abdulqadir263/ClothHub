@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../admin_products_viewmodel.dart';
 import '../widgets/product_card.dart';
-import '../widgets/product_dialogs.dart';
+import 'product_detail_view.dart';
 
 /// Admin Products Tab - Displays all products in a grid
 class AdminProductsTabView extends StatelessWidget {
@@ -71,11 +71,7 @@ class AdminProductsTabView extends StatelessWidget {
           final product = viewModel.products[index];
           return ProductCard(
             product: product,
-            onLongPress: () => ProductDialogs.showOptionsSheet(
-              context,
-              viewModel,
-              product,
-            ),
+            onTap: () => Get.to(() => ProductDetailView(product: product)),
           );
         },
       );

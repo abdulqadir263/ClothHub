@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import '../../../app/utils/constants.dart';
+import '../../../app/services/auth_navigation_service.dart';
 import '../../../data/repositories/auth_repository.dart';
 
 class LoginViewModel extends GetxController {
-  final AuthRepository authRepo = Get.find<AuthRepository>();
+  final AuthRepository _authRepo = Get.find<AuthRepository>();
+  final AuthNavigationService _navigationService = Get.find<AuthNavigationService>();
 
   var isLoading = false.obs;
 
@@ -20,23 +21,16 @@ class LoginViewModel extends GetxController {
 
     isLoading.value = true;
     try {
-      await authRepo.login(email, password);
+      await _authRepo.login(email, password);
       Get.snackbar("Success", "Login successful");
-      navigateAfterLogin(email);
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar("Error", e.message ?? "Login Failed");
-    } finally {
-      isLoading.value = false;
-    }
-  }
 
-  void navigateAfterLogin(String email) {
-    if (authRepo.isLoggedIn) {
-      if (AppConstants.adminEmails.contains(email.toLowerCase().trim())) {
-        Get.offAllNamed('/admin-dashboard');
-      } else {
-        Get.offAllNamed('/user-home');
-      }
+      await _navigationService.navigateBasedOnEmail(email);
+    } on FirebaseAuthException catch (e)
+    {
+      Get.snackbar("Error", e.message ?? "Login Failed");
+    }
+    finally {
+      isLoading.value = false;
     }
   }
 }

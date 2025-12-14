@@ -5,18 +5,18 @@ import '../../../../data/models/product_model.dart';
 /// Product card widget for admin products grid
 class ProductCard extends StatelessWidget {
   final ProductModel product;
-  final VoidCallback onLongPress;
+  final VoidCallback onTap;
 
   const ProductCard({
     super.key,
     required this.product,
-    required this.onLongPress,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onLongPress: onLongPress,
+      onTap: onTap,
       child: Card(
         elevation: 4,
         shadowColor: Colors.black26,
@@ -43,37 +43,21 @@ class ProductCard extends StatelessWidget {
   }
 
   Widget _buildProductImage() {
-    return Stack(
-      children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-          child: Image.network(
-            product.imageUrl,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                color: Colors.grey[200],
-                child: const Center(
-                  child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey),
-                ),
-              );
-            },
-          ),
-        ),
-        Positioned(
-          top: 8,
-          right: 8,
-          child: Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      child: Image.network(
+        product.imageUrl,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: Colors.grey[200],
+            child: const Center(
+              child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey),
             ),
-            child: Icon(Icons.more_vert, size: 18, color: Colors.grey[700]),
-          ),
-        ),
-      ],
+          );
+        },
+      ),
     );
   }
 
@@ -103,17 +87,8 @@ class ProductCard extends StatelessWidget {
           ),
           const Spacer(),
 
-          // Category Badge & Hint
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildCategoryBadge(),
-              Text(
-                'Hold for options',
-                style: TextStyle(fontSize: 8, color: Colors.grey[500]),
-              ),
-            ],
-          ),
+          // Category Badge
+          _buildCategoryBadge(),
         ],
       ),
     );

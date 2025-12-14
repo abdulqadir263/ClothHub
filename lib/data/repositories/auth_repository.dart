@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../app/utils/constants.dart';
 
 class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -8,6 +9,11 @@ class AuthRepository {
   bool get isLoggedIn => _auth.currentUser != null;
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+  /// Check if the given email belongs to an admin user
+  bool isAdminEmail(String email) {
+    return AppConstants.adminEmails.contains(email.toLowerCase().trim());
+  }
 
   Future<UserCredential> login(String email, String password) {
     return _auth.signInWithEmailAndPassword(email: email, password: password);
