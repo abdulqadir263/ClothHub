@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 
-/// Image picker widget for selecting product images
 class ImagePickerBox extends StatelessWidget {
   final File? selectedImage;
   final VoidCallback onTap;

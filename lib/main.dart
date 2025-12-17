@@ -36,7 +36,6 @@ void initDependencies() {
   Get.lazyPut(() => OrderRepository(), fenix: true);
   Get.lazyPut(() => CartRepository(), fenix: true);
 
-  // Navigation Service
   Get.lazyPut(() => AuthNavigationService(
     Get.find<AuthRepository>(),
     Get.find<UserRepository>(),

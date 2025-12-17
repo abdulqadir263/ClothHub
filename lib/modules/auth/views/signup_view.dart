@@ -44,114 +44,58 @@ class _SignupViewState extends State<SignupView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
-            const SizedBox(height: 40),
-
+            AppTheme.spacerLarge(),
+            AppTheme.spacerMedium(),
             Icon(Icons.person, size: 80, color: AppTheme.primary),
-            const SizedBox(height: 20),
-            const Text(
-              "Sign Up",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 40),
-
-            TextField(
+            AppTheme.spacerMedium(),
+            const Text("Sign Up", style: AppTheme.headingText),
+            AppTheme.spacerLarge(),
+            AppTheme.spacerMedium(),
+            AppTheme.inputField(
               controller: emailController,
+              hint: "Enter your email",
+              label: "Email",
+              icon: Icons.email,
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: "Email",
-                hintText: "Enter your email",
-                prefixIcon: const Icon(Icons.email),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
             ),
-
-            const SizedBox(height: 20),
-
-            TextField(
-              obscureText: obscurePassword,
+            AppTheme.spacerMedium(),
+            AppTheme.inputField(
               controller: passwordController,
-              decoration: InputDecoration(
-                labelText: "Password",
-                hintText: "Enter your password",
-                prefixIcon: const Icon(Icons.lock),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    obscurePassword ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      obscurePassword = !obscurePassword;
-                    });
-                  },
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+              hint: "Enter your password",
+              label: "Password",
+              icon: Icons.lock,
+              obscureText: obscurePassword,
+              suffixIcon: IconButton(
+                icon: Icon(obscurePassword ? Icons.visibility : Icons.visibility_off),
+                onPressed: () => setState(() => obscurePassword = !obscurePassword),
               ),
             ),
-            const SizedBox(height: 20),
-            TextField(
-              obscureText: obscureConfirmPassword,
+            AppTheme.spacerMedium(),
+            AppTheme.inputField(
               controller: confirmPasswordController,
-              decoration: InputDecoration(
-                labelText: "Confirm Password",
-                hintText: "Confirm your password",
-                prefixIcon: const Icon(Icons.lock),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      obscureConfirmPassword = !obscureConfirmPassword;
-                    });
-                  },
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+              hint: "Confirm your password",
+              label: "Confirm Password",
+              icon: Icons.lock,
+              obscureText: obscureConfirmPassword,
+              suffixIcon: IconButton(
+                icon: Icon(obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
+                onPressed: () => setState(() => obscureConfirmPassword = !obscureConfirmPassword),
               ),
             ),
-            const SizedBox(height: 30),
-            Obx(() {
-              return viewModel.isLoading.value
-                  ? const CircularProgressIndicator()
-                  : SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          viewModel.signup(
-                            emailController.text,
-                            passwordController.text,
-                            confirmPasswordController.text,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: AppTheme.primary,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          "SIGN UP",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    );
-            }),
+            AppTheme.spacerLarge(),
+            Obx(() => AppTheme.primaryButton(
+              text: "SIGN UP",
+              onPressed: () => viewModel.signup(
+                emailController.text,
+                passwordController.text,
+                confirmPasswordController.text,
+              ),
+              isLoading: viewModel.isLoading.value,
+            )),
             const SizedBox(height: 15),
             TextButton(
               onPressed: () => Get.back(),
-              child: const Text(
-                "Already have an account? Login",
-                style: TextStyle(fontSize: 16),
-              ),
+              child: const Text("Already have an account? Login", style: AppTheme.bodyText),
             ),
           ],
         ),

@@ -14,6 +14,7 @@ class UserProfileTabView extends StatefulWidget {
 }
 
 class _UserProfileTabViewState extends State<UserProfileTabView> {
+
   final UserHomeViewModel viewModel = Get.find<UserHomeViewModel>();
   final UserRepository userRepo = Get.find<UserRepository>();
 
@@ -53,6 +54,7 @@ class _UserProfileTabViewState extends State<UserProfileTabView> {
   }
 
   Future<void> saveProfile() async {
+
     if (fullNameController.text.isEmpty) {
       Get.snackbar('Error', 'Please enter your full name');
       return;
@@ -84,9 +86,12 @@ class _UserProfileTabViewState extends State<UserProfileTabView> {
 
       setState(() => isEditing = false);
       Get.snackbar('Success', 'Profile updated successfully');
-    } catch (e) {
+    }
+    catch (e)
+    {
       Get.snackbar('Error', 'Failed to update profile');
-    } finally {
+    } finally
+    {
       setState(() => isLoading = false);
     }
   }
@@ -109,6 +114,7 @@ class _UserProfileTabViewState extends State<UserProfileTabView> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             const SizedBox(height: 16),
 
             Center(
@@ -155,6 +161,7 @@ class _UserProfileTabViewState extends State<UserProfileTabView> {
                 isLoading: isLoading,
                 onSave: saveProfile,
               )
+
             else
               UserProfileCard(user: user),
           ],

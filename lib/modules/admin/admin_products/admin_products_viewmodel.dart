@@ -3,6 +3,7 @@ import '../../../data/models/product_model.dart';
 import '../../../data/repositories/product_repository.dart';
 
 class AdminProductsViewModel extends GetxController {
+
   final ProductRepository productRepo = Get.find<ProductRepository>();
 
   var isLoading = false.obs;

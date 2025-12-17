@@ -39,79 +39,34 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-            Icon(
-                Icons.lock_reset,
-                size: 80,
-                color: AppTheme.primary
-            ),
-
-            const SizedBox(height: 20),
-
-            const Text(
-              "Reset Password",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 10),
-
-            const Text(
+            Icon(Icons.lock_reset, size: 80, color: AppTheme.primary),
+            AppTheme.spacerMedium(),
+            const Text("Reset Password", style: AppTheme.headingText),
+            AppTheme.spacerSmall(),
+            Text(
               "Enter your email address to get a link to reset your password.",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+              style: AppTheme.captionText,
             ),
-
-            const SizedBox(height: 40),
-
-            TextField(
+            AppTheme.spacerLarge(),
+            AppTheme.spacerMedium(),
+            AppTheme.inputField(
               controller: emailController,
+              hint: "Enter your email",
+              label: "Email",
+              icon: Icons.email,
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: "Email",
-                hintText: "Enter your email",
-                prefixIcon: const Icon(Icons.email),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
             ),
-
-            const SizedBox(height: 20),
-
-            Obx(() {
-              return viewModel.isLoading.value
-                  ? const CircularProgressIndicator()
-                  : SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          viewModel.resetPassword(emailController.text);
-                        },
-
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: AppTheme.primary,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-
-                        child: const Text(
-                          "SEND RESET LINK",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    );
-            }),
-
+            AppTheme.spacerMedium(),
+            Obx(() => AppTheme.primaryButton(
+              text: "SEND RESET LINK",
+              onPressed: () => viewModel.resetPassword(emailController.text),
+              isLoading: viewModel.isLoading.value,
+            )),
             const SizedBox(height: 15),
-
             TextButton(
               onPressed: () => Get.back(),
-              child: const Text(
-                "Back to Login",
-                style: TextStyle(fontSize: 16),
-              ),
+              child: const Text("Back to Login", style: AppTheme.bodyText),
             ),
 
           ],

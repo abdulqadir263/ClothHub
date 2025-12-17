@@ -14,18 +14,24 @@ class UserProfileCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
+
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+
             _buildProfileRow(Icons.person, 'Full Name', user.fullName),
             const Divider(),
+
             _buildProfileRow(Icons.wc, 'Gender', user.gender),
             const Divider(),
+
             _buildProfileRow(Icons.cake, 'Age', user.age > 0 ? user.age.toString() : 'Not set'),
             const Divider(),
+
             _buildProfileRow(Icons.location_on, 'Address', user.address.isEmpty ? 'Not set' : user.address),
             const Divider(),
+
             _buildProfileRow(Icons.phone, 'Phone', user.phoneNumber),
           ],
         ),
@@ -39,7 +45,9 @@ class UserProfileCard extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: AppTheme.primary, size: 24),
-          const SizedBox(width: 16),
+
+          AppTheme.spacerMedium(),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,13 +59,16 @@ class UserProfileCard extends StatelessWidget {
                     color: Colors.grey,
                   ),
                 ),
-                const SizedBox(height: 4),
+
+                AppTheme.spacerSmall(),
+
                 Text(
                   value.isEmpty ? 'Not set' : value,
                   style: const TextStyle(
                     fontSize: 16,
                   ),
                 ),
+
               ],
             ),
           ),

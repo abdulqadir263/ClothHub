@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../app/themes/app_theme.dart';
 
 class UserProfileEditForm extends StatelessWidget {
+
   final TextEditingController fullNameController;
   final TextEditingController ageController;
   final TextEditingController addressController;
@@ -27,105 +28,73 @@ class UserProfileEditForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
+        AppTheme.inputField(
           controller: fullNameController,
-          decoration: InputDecoration(
-            labelText: 'Full Name',
-            prefixIcon: const Icon(Icons.person),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
+          hint: 'Enter your full name',
+          label: 'Full Name',
+          icon: Icons.person,
         ),
 
-        const SizedBox(height: 16),
+        AppTheme.spacerMedium(),
 
         DropdownButtonFormField<String>(
-          value: selectedGender,
+
+          initialValue: selectedGender,
           decoration: InputDecoration(
             labelText: 'Gender',
             prefixIcon: const Icon(Icons.wc),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           ),
+
           items: const [
             DropdownMenuItem(value: 'Male', child: Text('Male')),
             DropdownMenuItem(value: 'Female', child: Text('Female')),
           ],
+
           onChanged: (value) {
-            if (value != null) {
-              onGenderChanged(value);
-            }
+            if (value != null) onGenderChanged(value);
           },
         ),
 
-        const SizedBox(height: 16),
+        AppTheme.spacerMedium(),
 
-        TextField(
+        AppTheme.inputField(
           controller: ageController,
+          hint: 'Enter your age',
+          label: 'Age',
+          icon: Icons.cake,
           keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            labelText: 'Age',
-            prefixIcon: const Icon(Icons.cake),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
         ),
 
-        const SizedBox(height: 16),
+        AppTheme.spacerMedium(),
 
-        TextField(
+        AppTheme.inputField(
           controller: addressController,
+          hint: 'Enter your address',
+          label: 'Address',
+          icon: Icons.location_on,
           maxLines: 2,
-          decoration: InputDecoration(
-            labelText: 'Address',
-            prefixIcon: const Icon(Icons.location_on),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
         ),
 
-        const SizedBox(height: 16),
+        AppTheme.spacerMedium(),
 
-        TextField(
+        AppTheme.inputField(
           controller: phoneController,
+          hint: 'Enter your phone number',
+          label: 'Phone Number',
+          icon: Icons.phone,
           keyboardType: TextInputType.phone,
-          decoration: InputDecoration(
-            labelText: 'Phone Number',
-            prefixIcon: const Icon(Icons.phone),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
         ),
 
-        const SizedBox(height: 24),
+        AppTheme.spacerLarge(),
 
-        isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: onSave,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: AppTheme.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text(
-                    'SAVE CHANGES',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
+        AppTheme.primaryButton(
+          text: 'SAVE CHANGES',
+          onPressed: onSave,
+          isLoading: isLoading,
+        ),
 
-        const SizedBox(height: 16),
+        AppTheme.spacerMedium(),
       ],
     );
   }

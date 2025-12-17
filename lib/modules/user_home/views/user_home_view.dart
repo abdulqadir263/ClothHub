@@ -14,6 +14,7 @@ class UserHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final UserHomeViewModel viewModel = Get.find<UserHomeViewModel>();
     final CartViewModel cartViewModel = Get.find<CartViewModel>();
 
@@ -34,6 +35,7 @@ class UserHomeView extends StatelessWidget {
           ),
         ],
       ),
+
       body: Obx(() {
         switch (viewModel.currentTabIndex.value) {
           case 0:
@@ -54,7 +56,7 @@ class UserHomeView extends StatelessWidget {
           viewModel.changeTab(index);
         },
         backgroundColor: Colors.white,
-        indicatorColor: AppTheme.primary.withOpacity(0.2),
+        indicatorColor: AppTheme.primary.withValues(alpha: 0.2),
         destinations: [
           const NavigationDestination(
             icon: Icon(Icons.storefront_outlined),

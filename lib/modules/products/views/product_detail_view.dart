@@ -98,45 +98,17 @@ class ProductDetailView extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    const Text(
-                      'Description',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-
-                    const SizedBox(height: 8),
-
+                    const Text('Description', style: AppTheme.subHeadingText),
+                    AppTheme.spacerSmall(),
                     Text(
                       product.description,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[700],
-                        height: 1.5,
-                      ),
+                      style: TextStyle(fontSize: 16, color: Colors.grey[700], height: 1.5),
                     ),
-
-                    const SizedBox(height: 30),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: () => viewModel.addToCart(),
-                        icon: const Icon(Icons.shopping_cart),
-                        label: const Text(
-                          'ADD TO CART',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: AppTheme.primary,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
+                    AppTheme.spacerLarge(),
+                    AppTheme.primaryButton(
+                      text: 'ADD TO CART',
+                      onPressed: () => viewModel.addToCart(),
+                      icon: Icons.shopping_cart,
                     ),
                   ],
                 ),

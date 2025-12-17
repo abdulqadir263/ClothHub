@@ -26,6 +26,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+
     final LoginViewModel viewModel = Get.find<LoginViewModel>();
 
     return Scaffold(
@@ -40,92 +41,47 @@ class _LoginViewState extends State<LoginView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 40),
+            AppTheme.spacerLarge(),
+            AppTheme.spacerMedium(),
             Icon(Icons.person, size: 80, color: AppTheme.primary),
-            const SizedBox(height: 20),
-            const Text(
-              "Login",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 40),
-            TextField(
+            AppTheme.spacerMedium(),
+            const Text("Login", style: AppTheme.headingText),
+            AppTheme.spacerLarge(),
+            AppTheme.spacerMedium(),
+            AppTheme.inputField(
               controller: emailController,
+              hint: "Enter your email",
+              label: "Email",
+              icon: Icons.email,
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: "Email",
-                hintText: "Enter your email",
-                prefixIcon: const Icon(Icons.email),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
             ),
-            const SizedBox(height: 20),
-            TextField(
-              obscureText: obscurePassword,
+            AppTheme.spacerMedium(),
+            AppTheme.inputField(
               controller: passwordController,
-              decoration: InputDecoration(
-                labelText: "Password",
-                hintText: "Enter your password",
-                prefixIcon: const Icon(Icons.lock),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    obscurePassword ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      obscurePassword = !obscurePassword;
-                    });
-                  },
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+              hint: "Enter your password",
+              label: "Password",
+              icon: Icons.lock,
+              obscureText: obscurePassword,
+              suffixIcon: IconButton(
+                icon: Icon(obscurePassword ? Icons.visibility : Icons.visibility_off),
+                onPressed: () => setState(() => obscurePassword = !obscurePassword),
               ),
             ),
-            const SizedBox(height: 20),
-            Obx(() {
-              return viewModel.isLoading.value
-                  ? const CircularProgressIndicator()
-                  : SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          viewModel.login(
-                            emailController.text,
-                            passwordController.text,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: AppTheme.primary,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text(
-                          "LOGIN",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    );
-            }),
+            AppTheme.spacerMedium(),
+            Obx(() => AppTheme.primaryButton(
+              text: "LOGIN",
+              onPressed: () => viewModel.login(emailController.text, passwordController.text),
+              isLoading: viewModel.isLoading.value,
+            )),
             const SizedBox(height: 15),
             TextButton(
               onPressed: () => Get.toNamed(AppRoutes.signup),
-              child: const Text(
-                "Don't have an account? Sign Up",
-                style: TextStyle(fontSize: 16),
-              ),
+              child: const Text("Don't have an account? Sign Up", style: AppTheme.bodyText),
             ),
-            const SizedBox(height: 10),
+            AppTheme.spacerSmall(),
             TextButton(
               onPressed: () => Get.toNamed(AppRoutes.forgotPassword),
-              child: const Text(
-                "Forgot Password?",
-                style: TextStyle(fontSize: 16),
-              ),
+              child: const Text("Forgot Password?", style: AppTheme.bodyText),
             ),
           ],
         ),

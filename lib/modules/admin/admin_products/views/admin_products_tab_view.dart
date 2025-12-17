@@ -4,7 +4,6 @@ import '../admin_products_viewmodel.dart';
 import '../widgets/product_card.dart';
 import 'product_detail_view.dart';
 
-/// Admin Products Tab - Displays all products in a grid
 class AdminProductsTabView extends StatelessWidget {
   const AdminProductsTabView({super.key});
 
@@ -15,16 +14,13 @@ class AdminProductsTabView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Header with title and refresh button
         _buildHeader(viewModel),
 
-        // Products grid
         Expanded(child: _buildProductsGrid(context, viewModel)),
       ],
     );
   }
 
-  /// Builds the header section
   Widget _buildHeader(AdminProductsViewModel viewModel) {
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -44,20 +40,16 @@ class AdminProductsTabView extends StatelessWidget {
     );
   }
 
-  /// Builds the products grid or empty/loading state
   Widget _buildProductsGrid(BuildContext context, AdminProductsViewModel viewModel) {
     return Obx(() {
-      // Loading state
       if (viewModel.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
 
-      // Empty state
       if (viewModel.products.isEmpty) {
         return _buildEmptyState();
       }
 
-      // Products grid
       return GridView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -66,6 +58,7 @@ class AdminProductsTabView extends StatelessWidget {
           crossAxisSpacing: 12,
           mainAxisSpacing: 12,
         ),
+
         itemCount: viewModel.products.length,
         itemBuilder: (context, index) {
           final product = viewModel.products[index];
@@ -78,7 +71,6 @@ class AdminProductsTabView extends StatelessWidget {
     });
   }
 
-  /// Builds empty state widget
   Widget _buildEmptyState() {
     return Center(
       child: Column(

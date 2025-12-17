@@ -103,11 +103,13 @@ class _EditProductViewState extends State<EditProductView> {
   }
 
   Widget _buildTextField(TextEditingController controller, String label, IconData icon, {int maxLines = 1, TextInputType keyboardType = TextInputType.text}) {
-    return Container(
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)]),
-      child: TextField(controller: controller, maxLines: maxLines, keyboardType: keyboardType, decoration: InputDecoration(
-        labelText: label, prefixIcon: Icon(icon), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none), filled: true, fillColor: Colors.white,
-      )),
+    return AppTheme.inputField(
+      controller: controller,
+      hint: label,
+      label: label,
+      icon: icon,
+      maxLines: maxLines,
+      keyboardType: keyboardType,
     );
   }
 
@@ -124,11 +126,11 @@ class _EditProductViewState extends State<EditProductView> {
   }
 
   Widget _buildUpdateButton() {
-    return SizedBox(width: double.infinity, child: ElevatedButton(
-      onPressed: isLoading ? null : updateProduct,
-      style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: AppTheme.primary, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-      child: isLoading ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : const Text('UPDATE PRODUCT', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-    ));
+    return AppTheme.primaryButton(
+      text: 'UPDATE PRODUCT',
+      onPressed: updateProduct,
+      isLoading: isLoading,
+    );
   }
 }
 

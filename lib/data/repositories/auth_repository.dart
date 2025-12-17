@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../app/utils/constants.dart';
 
 class AuthRepository {
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   User? get currentUser => _auth.currentUser;
@@ -10,7 +11,6 @@ class AuthRepository {
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  /// Check if the given email belongs to an admin user
   bool isAdminEmail(String email) {
     return AppConstants.adminEmails.contains(email.toLowerCase().trim());
   }

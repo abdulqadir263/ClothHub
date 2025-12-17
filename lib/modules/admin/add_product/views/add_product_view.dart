@@ -145,7 +145,7 @@ class _AddProductViewState extends State<AddProductView> {
             const SizedBox(height: 16),
 
             Obx(() => DropdownButtonFormField<String>(
-              value: viewModel.productCategory.value,
+              initialValue: viewModel.productCategory.value,
               decoration: InputDecoration(
                 labelText: 'Category',
                 prefixIcon: const Icon(Icons.category),
@@ -164,29 +164,13 @@ class _AddProductViewState extends State<AddProductView> {
               },
             )),
 
-            const SizedBox(height: 30),
+            AppTheme.spacerLarge(),
 
-            Obx(() => viewModel.isLoading.value
-                ? const Center(child: CircularProgressIndicator())
-                : SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => viewModel.addProduct(),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: AppTheme.primary,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        'ADD PRODUCT',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
-            ),
+            Obx(() => AppTheme.primaryButton(
+              text: 'ADD PRODUCT',
+              onPressed: () => viewModel.addProduct(),
+              isLoading: viewModel.isLoading.value,
+            )),
           ],
         ),
       ),

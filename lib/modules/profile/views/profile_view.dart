@@ -17,6 +17,16 @@ class _ProfileViewState extends State<ProfileView> {
   final TextEditingController phoneController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    final viewModel = Get.find<ProfileViewModel>();
+    fullNameController.addListener(() => viewModel.fullName.value = fullNameController.text);
+    ageController.addListener(() => viewModel.age.value = int.tryParse(ageController.text) ?? 0);
+    addressController.addListener(() => viewModel.address.value = addressController.text);
+    phoneController.addListener(() => viewModel.phoneNumber.value = phoneController.text);
+  }
+
+  @override
   void dispose() {
     fullNameController.dispose();
     ageController.dispose();
@@ -42,142 +52,76 @@ class _ProfileViewState extends State<ProfileView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
-
-            Center(
-              child: Icon(
-                Icons.person_outline,
-                size: 80,
-                color: AppTheme.primary,
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            const Center(
-              child: Text(
-                'Complete Your Profile',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            TextField(
-              controller: fullNameController,
-              onChanged: (value) => viewModel.fullName.value = value,
-              decoration: InputDecoration(
-                labelText: 'Full Name',
-                hintText: 'Enter your full name',
-                prefixIcon: const Icon(Icons.person),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            Obx(() => DropdownButtonFormField<String>(
-              value: viewModel.gender.value,
-              decoration: InputDecoration(
-                labelText: 'Gender',
-                prefixIcon: const Icon(Icons.wc),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              items: const [
-                DropdownMenuItem(value: 'Male', child: Text('Male')),
-                DropdownMenuItem(value: 'Female', child: Text('Female')),
-              ],
-              onChanged: (value) {
-                if (value != null) {
-                  viewModel.gender.value = value;
-                }
-              },
-            )),
-
-            const SizedBox(height: 16),
-
-            TextField(
-              controller: ageController,
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                viewModel.age.value = int.tryParse(value) ?? 0;
-              },
-              decoration: InputDecoration(
-                labelText: 'Age',
-                hintText: 'Enter your age',
-                prefixIcon: const Icon(Icons.cake),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            TextField(
-              controller: addressController,
-              maxLines: 2,
-              onChanged: (value) => viewModel.address.value = value,
-              decoration: InputDecoration(
-                labelText: 'Address',
-                hintText: 'Enter your address',
-                prefixIcon: const Icon(Icons.location_on),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            TextField(
-              controller: phoneController,
-              keyboardType: TextInputType.phone,
-              onChanged: (value) => viewModel.phoneNumber.value = value,
-              decoration: InputDecoration(
-                labelText: 'Phone Number',
-                hintText: 'Enter your phone number',
-                prefixIcon: const Icon(Icons.phone),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            Obx(() => viewModel.isLoading.value
-                ? const Center(child: CircularProgressIndicator())
-                : SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => viewModel.saveProfile(),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: AppTheme.primary,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        'SAVE PROFILE',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
-            ),
+            Text('Profile Details', style: AppTheme.headingText),
+            AppTheme.spacerMedium(),
+            _buildProfileForm(viewModel),
           ],
         ),
       ),
     );
   }
-}
 
+  Widget _buildProfileForm(ProfileViewModel viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Center(child: Icon(Icons.person_outline, size: 80, color: AppTheme.primary)),
+        AppTheme.spacerMedium(),
+        const Center(child: Text('Complete Your Profile', style: AppTheme.headingText)),
+        AppTheme.spacerLarge(),
+        AppTheme.inputField(
+          controller: fullNameController,
+          hint: 'Enter your full name',
+          label: 'Full Name',
+          icon: Icons.person,
+        ),
+        AppTheme.spacerMedium(),
+        Obx(() => DropdownButtonFormField<String>(
+          initialValue: viewModel.gender.value,
+          decoration: InputDecoration(
+            labelText: 'Gender',
+            prefixIcon: const Icon(Icons.wc),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+          items: const [
+            DropdownMenuItem(value: 'Male', child: Text('Male')),
+            DropdownMenuItem(value: 'Female', child: Text('Female')),
+          ],
+          onChanged: (value) {
+            if (value != null) viewModel.gender.value = value;
+          },
+        )),
+        AppTheme.spacerMedium(),
+        AppTheme.inputField(
+          controller: ageController,
+          hint: 'Enter your age',
+          label: 'Age',
+          icon: Icons.cake,
+          keyboardType: TextInputType.number,
+        ),
+        AppTheme.spacerMedium(),
+        AppTheme.inputField(
+          controller: addressController,
+          hint: 'Enter your address',
+          label: 'Address',
+          icon: Icons.location_on,
+          maxLines: 2,
+        ),
+        AppTheme.spacerMedium(),
+        AppTheme.inputField(
+          controller: phoneController,
+          hint: 'Enter your phone number',
+          label: 'Phone Number',
+          icon: Icons.phone,
+          keyboardType: TextInputType.phone,
+        ),
+        AppTheme.spacerLarge(),
+        Obx(() => AppTheme.primaryButton(
+          text: 'SAVE PROFILE',
+          onPressed: () => viewModel.saveProfile(),
+          isLoading: viewModel.isLoading.value,
+        )),
+      ],
+    );
+  }
+}

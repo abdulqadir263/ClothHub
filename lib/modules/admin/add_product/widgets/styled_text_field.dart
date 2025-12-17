@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Styled text field with shadow for forms
 class StyledTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;

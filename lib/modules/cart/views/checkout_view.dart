@@ -26,12 +26,12 @@ class CheckoutView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Order Summary', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
+                  const Text('Order Summary', style: AppTheme.subHeadingText),
+                  AppTheme.spacerMedium(),
                   _buildItemsList(viewModel),
                   const Divider(height: 32),
                   _buildPriceRow('Subtotal:', 'Rs. ${viewModel.totalPrice.toStringAsFixed(0)}'),
-                  const SizedBox(height: 8),
+                  AppTheme.spacerSmall(),
                   _buildPriceRow('Delivery:', 'Free', isGreen: true),
                   const Divider(height: 32),
                   _buildTotalRow(viewModel),
@@ -103,21 +103,11 @@ class CheckoutView extends StatelessWidget {
         color: Colors.white,
         boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.3), blurRadius: 10, offset: const Offset(0, -5))],
       ),
-      child: viewModel.isLoading.value
-          ? const Center(child: CircularProgressIndicator())
-          : SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => viewModel.placeOrder(),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: AppTheme.primary,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-                child: const Text('PLACE ORDER', style: TextStyle(fontSize: 16)),
-              ),
-            ),
+      child: AppTheme.primaryButton(
+        text: 'PLACE ORDER',
+        onPressed: () => viewModel.placeOrder(),
+        isLoading: viewModel.isLoading.value,
+      ),
     );
   }
 }

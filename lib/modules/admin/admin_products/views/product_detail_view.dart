@@ -121,34 +121,17 @@ class ProductDetailView extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton.icon(
-              onPressed: () => Get.to(() => EditProductView(product: product)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              icon: const Icon(Icons.edit),
-              label: const Text('Edit Product', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            ),
+          AppTheme.primaryButton(
+            text: 'Edit Product',
+            onPressed: () => Get.to(() => EditProductView(product: product)),
+            icon: Icons.edit,
           ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: OutlinedButton.icon(
-              onPressed: () => _showDeleteConfirmation(context, viewModel),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.red,
-                side: const BorderSide(color: Colors.red, width: 1.5),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              icon: const Icon(Icons.delete),
-              label: const Text('Delete Product', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            ),
+          AppTheme.spacerSmall(),
+          AppTheme.secondaryButton(
+            text: 'Delete Product',
+            onPressed: () => _showDeleteConfirmation(context, viewModel),
+            color: Colors.red,
+            icon: Icons.delete,
           ),
         ],
       ),
