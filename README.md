@@ -167,7 +167,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 👨‍💻 Author
 
-Built with ❤️ using Flutter
+Built by Abdul-Qadir using Flutter
 
 ---
 
