@@ -3,6 +3,7 @@ import '../../../data/models/order_model.dart';
 import '../../../data/repositories/order_repository.dart';
 
 class AdminOrderViewModel extends GetxController {
+
   final OrderRepository orderRepo = Get.find<OrderRepository>();
 
   var orders = <OrderModel>[].obs;
@@ -11,26 +12,30 @@ class AdminOrderViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchAllOrders();
+    _listenToOrders();
   }
 
-  Future<void> fetchAllOrders() async {
+  void _listenToOrders() {
+
     isLoading.value = true;
-    try {
-      orders.value = await orderRepo.getAllOrders();
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to load orders');
-    } finally {
-      isLoading.value = false;
-    }
+
+    final stream = orderRepo.getAllOrders();
+    orders.bindStream(stream);
+    stream.listen((_) => isLoading.value = false);
+
+  }
+
+  void fetchAllOrders() {
+    _listenToOrders();
   }
 
   Future<void> updateStatus(String orderId, String newStatus) async {
-    try {
+    try
+    {
       await orderRepo.updateOrderStatus(orderId, newStatus);
-      fetchAllOrders();
       Get.snackbar('Success', 'Order status updated');
-    } catch (e) {
+    }
+    catch (e) {
       Get.snackbar('Error', 'Failed to update status');
     }
   }

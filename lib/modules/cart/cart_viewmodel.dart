@@ -6,6 +6,7 @@ import '../../data/repositories/order_repository.dart';
 import '../../data/repositories/cart_repository.dart';
 
 class CartViewModel extends GetxController {
+
   final CartRepository _cartRepo = Get.find<CartRepository>();
 
   var cartItems = <CartItemModel>[].obs;
@@ -26,23 +27,38 @@ class CartViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadCart();
+    _listenToCart();
   }
 
-  Future<void> loadCart() async {
-    if (_userId == null) return;
+  void _listenToCart() {
+    if (_userId == null) {
+      print('User ID is null, cannot listen to cart.');
+      return;
+    }
 
     isLoading.value = true;
-    try {
-      cartItems.value = await _cartRepo.fetchCart(_userId!);
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to load cart');
-    } finally {
-      isLoading.value = false;
-    }
+    print('Listening to cart for user ID: $_userId');
+
+    final stream = _cartRepo.fetchCart(_userId!);
+
+    cartItems.bindStream(stream);
+    stream.listen(
+      (items)
+      {
+        print('Cart items updated: ${items.length} items');
+        isLoading.value = false;
+      },
+
+      onError: (error) {
+        print('Error listening to cart: $error');
+        isLoading.value = false;
+      },
+
+    );
   }
 
-  Future<void> addToCart(CartItemModel item) async {
+  Future<void> addToCart(CartItemModel item) async
+  {
     if (_userId == null) {
       Get.snackbar('Error', 'Please login first');
       return;
@@ -53,37 +69,33 @@ class CartViewModel extends GetxController {
     );
 
     if (existingIndex >= 0) {
-      cartItems[existingIndex].quantity++;
-      cartItems.refresh();
       await _cartRepo.updateQuantity(
         _userId!,
         item.productId,
-        cartItems[existingIndex].quantity,
+        cartItems[existingIndex].quantity + 1,
       );
-    } else {
-      cartItems.add(item);
+    } else
+    {
       await _cartRepo.addToCart(_userId!, item);
     }
   }
 
-  Future<void> removeFromCart(String productId) async {
+  Future<void> removeFromCart(String productId) async
+  {
     if (_userId == null) return;
-
-    cartItems.removeWhere((item) => item.productId == productId);
     await _cartRepo.removeFromCart(_userId!, productId);
   }
 
-  Future<void> increaseQuantity(String productId) async {
+  Future<void> increaseQuantity(String productId) async
+  {
     if (_userId == null) return;
 
     final index = cartItems.indexWhere((item) => item.productId == productId);
     if (index >= 0) {
-      cartItems[index].quantity++;
-      cartItems.refresh();
       await _cartRepo.updateQuantity(
         _userId!,
         productId,
-        cartItems[index].quantity,
+        cartItems[index].quantity + 1,
       );
     }
   }
@@ -94,12 +106,10 @@ class CartViewModel extends GetxController {
     final index = cartItems.indexWhere((item) => item.productId == productId);
     if (index >= 0) {
       if (cartItems[index].quantity > 1) {
-        cartItems[index].quantity--;
-        cartItems.refresh();
         await _cartRepo.updateQuantity(
           _userId!,
           productId,
-          cartItems[index].quantity,
+          cartItems[index].quantity - 1,
         );
       } else {
         await removeFromCart(productId);
@@ -109,8 +119,6 @@ class CartViewModel extends GetxController {
 
   Future<void> clearCart() async {
     if (_userId == null) return;
-
-    cartItems.clear();
     await _cartRepo.clearCart(_userId!);
   }
 

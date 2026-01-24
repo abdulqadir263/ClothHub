@@ -1,4 +1,5 @@
-class UserModel {
+class UserModel
+{
   final String uid;
   final String email;
   final String fullName;
@@ -17,7 +18,8 @@ class UserModel {
     this.phoneNumber = '',
   });
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromMap(Map<String, dynamic> map)
+  {
     return UserModel(
       uid: map['uid'] ?? '',
       email: map['email'] ?? '',
@@ -29,7 +31,8 @@ class UserModel {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap()
+  {
     return {
       'uid': uid,
       'email': email,

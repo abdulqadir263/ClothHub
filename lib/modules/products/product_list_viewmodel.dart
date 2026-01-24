@@ -12,28 +12,25 @@ class ProductListViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchProducts();
+    _listenToProducts();
   }
 
-  Future<void> fetchProducts() async {
+  void _listenToProducts() {
     isLoading.value = true;
-    try {
-      if (selectedCategory.value == 'All') {
-        products.value = await productRepo.getAllProducts();
-      } else {
-        products.value = await productRepo.getProductsByCategory(
-          selectedCategory.value,
-        );
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to load products');
-    } finally {
-      isLoading.value = false;
+
+    Stream<List<ProductModel>> stream;
+    if (selectedCategory.value == 'All') {
+      stream = productRepo.getAllProducts();
+    } else {
+      stream = productRepo.getProductsByCategory(selectedCategory.value);
     }
+
+    products.bindStream(stream);
+    stream.listen((_) => isLoading.value = false);
   }
 
   void filterByCategory(String category) {
     selectedCategory.value = category;
-    fetchProducts();
+    _listenToProducts();
   }
 }

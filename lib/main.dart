@@ -11,6 +11,7 @@ import 'data/repositories/user_repository.dart';
 import 'data/repositories/product_repository.dart';
 import 'data/repositories/order_repository.dart';
 import 'data/repositories/cart_repository.dart';
+import 'data/repositories/media_repository.dart';
 import 'modules/cart/cart_viewmodel.dart';
 import 'modules/products/product_list_viewmodel.dart';
 import 'modules/orders/order_viewmodel.dart';
@@ -35,6 +36,7 @@ void initDependencies() {
   Get.lazyPut(() => ProductRepository(), fenix: true);
   Get.lazyPut(() => OrderRepository(), fenix: true);
   Get.lazyPut(() => CartRepository(), fenix: true);
+  Get.lazyPut(() => MediaRepository(), fenix: true);
 
   Get.lazyPut(() => AuthNavigationService(
     Get.find<AuthRepository>(),

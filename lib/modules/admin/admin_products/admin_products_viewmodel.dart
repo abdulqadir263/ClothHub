@@ -12,26 +12,30 @@ class AdminProductsViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchAllProducts();
+    _listenToProducts();
   }
 
-  Future<void> fetchAllProducts() async {
+  void _listenToProducts() {
+
     isLoading.value = true;
-    try {
-      products.value = await productRepo.getAllProducts();
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to load products');
-    } finally {
-      isLoading.value = false;
-    }
+
+    final stream = productRepo.getAllProducts();
+    products.bindStream(stream);
+    stream.listen((_) => isLoading.value = false);
+
+  }
+
+  void fetchAllProducts() {
+    _listenToProducts();
   }
 
   Future<void> deleteProduct(String productId) async {
-    try {
+    try
+    {
       await productRepo.deleteProduct(productId);
-      products.removeWhere((p) => p.id == productId);
       Get.snackbar('Success', 'Product deleted');
-    } catch (e) {
+    }
+    catch (e) {
       Get.snackbar('Error', 'Failed to delete product');
     }
   }

@@ -39,6 +39,7 @@ import '../../modules/orders/views/order_list_view.dart';
 import '../../modules/orders/order_binding.dart';
 
 class AppPages {
+
   static final pages = [
 
     GetPage(

@@ -11,23 +11,29 @@ class AuthRepository {
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  bool isAdminEmail(String email) {
+  bool isAdminEmail(String email)
+  {
     return AppConstants.adminEmails.contains(email.toLowerCase().trim());
   }
 
-  Future<UserCredential> login(String email, String password) {
+  Future<UserCredential> login(String email, String password)
+  {
     return _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  Future<UserCredential> signup(String email, String password) {
+  Future<UserCredential> signup(String email, String password)
+  {
     return _auth.createUserWithEmailAndPassword(email: email, password: password);
   }
 
-  Future<void> sendPasswordResetEmail(String email) {
+  Future<void> sendPasswordResetEmail(String email)
+  {
     return _auth.sendPasswordResetEmail(email: email);
   }
 
-  Future<void> logout() {
+  Future<void> logout()
+  {
     return _auth.signOut();
   }
+
 }

@@ -29,7 +29,6 @@ class SignupViewModel extends GetxController {
       await _authRepo.signup(email, password);
       Get.snackbar("Success", "Account created successfully");
 
-      // Use centralized navigation service
       await _navigationService.navigateBasedOnEmail(email);
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message ?? "SignUp Failed");

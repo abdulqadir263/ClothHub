@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../app/themes/app_theme.dart';
+import '../../../app/utils/helpers.dart';
 import '../../../data/models/order_model.dart';
 
 /// Order card widget for user's order list
@@ -53,7 +54,7 @@ class UserOrderCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: _getStatusColor(order.status),
+            color: AppHelpers.getStatusColor(order.status),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
@@ -73,7 +74,7 @@ class UserOrderCard extends StatelessWidget {
   Widget _buildOrderInfo() {
     return Column(
       children: [
-        _buildInfoRow(Icons.calendar_today, _formatDate(order.timestamp)),
+        _buildInfoRow(Icons.calendar_today, AppHelpers.formatDate(order.timestamp)),
         const SizedBox(height: 8),
         _buildInfoRow(Icons.shopping_bag, '${order.products.length} item(s)'),
       ],
@@ -148,26 +149,5 @@ class UserOrderCard extends StatelessWidget {
         );
       }).toList(),
     );
-  }
-
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return Colors.orange;
-      case 'packed':
-        return Colors.blue;
-      case 'shipped':
-        return Colors.purple;
-      case 'delivered':
-        return Colors.green;
-      case 'cancelled':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
   }
 }

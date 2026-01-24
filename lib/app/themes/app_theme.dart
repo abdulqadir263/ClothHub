@@ -7,7 +7,7 @@ class AppTheme {
   static const Color accent = Color(0xFFFF8A00);
   static const Color bg = Color(0xFFF6F8FB);
 
-  // ========== Common Values ==========
+
   static const double defaultRadius = 12.0;
   static const double defaultPadding = 16.0;
   static const double buttonHeight = 50.0;
@@ -48,7 +48,6 @@ class AppTheme {
 
   );
 
-  // ========== Reusable Text Styles ==========
   static const TextStyle headingText = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
@@ -69,7 +68,6 @@ class AppTheme {
     color: Colors.grey[600],
   );
 
-  // ========== Common Decorations ==========
   static BoxDecoration cardDecoration = BoxDecoration(
     color: Colors.white,
     borderRadius: BorderRadius.circular(defaultRadius),
@@ -89,12 +87,11 @@ class AppTheme {
     );
   }
 
-  // ========== Spacers ==========
+
   static Widget spacerSmall() => const SizedBox(height: 8);
   static Widget spacerMedium() => const SizedBox(height: 16);
   static Widget spacerLarge() => const SizedBox(height: 24);
 
-  // ========== Reusable UI Helpers ==========
 
   static Widget primaryButton({
     required String text,
@@ -102,11 +99,13 @@ class AppTheme {
     bool isLoading = false,
     double? width,
     IconData? icon,
-  }) {
+  })
+  {
     return SizedBox(
       width: width ?? double.infinity,
       height: buttonHeight,
       child: icon != null
+
           ? ElevatedButton.icon(
               onPressed: isLoading ? null : onPressed,
               style: ElevatedButton.styleFrom(
@@ -116,9 +115,16 @@ class AppTheme {
                   borderRadius: BorderRadius.circular(defaultRadius),
                 ),
               ),
+
               icon: Icon(icon),
-              label: Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+
+              label: Text(text,
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600)
+              ),
             )
+
           : ElevatedButton(
               onPressed: isLoading ? null : onPressed,
               style: ElevatedButton.styleFrom(
@@ -128,9 +134,16 @@ class AppTheme {
                   borderRadius: BorderRadius.circular(defaultRadius),
                 ),
               ),
+
               child: isLoading
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  : Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ? const CircularProgressIndicator(
+                  color: Colors.white
+              )
+                  : Text(text,
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600)
+              ),
             ),
     );
   }
@@ -140,7 +153,8 @@ class AppTheme {
     required VoidCallback onPressed,
     Color? color,
     IconData? icon,
-  }) {
+  })
+  {
     return SizedBox(
       width: double.infinity,
       height: buttonHeight,
@@ -154,9 +168,16 @@ class AppTheme {
                   borderRadius: BorderRadius.circular(defaultRadius),
                 ),
               ),
+
               icon: Icon(icon),
-              label: Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+
+              label: Text(text,
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600)
+              ),
             )
+
           : OutlinedButton(
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
@@ -166,7 +187,11 @@ class AppTheme {
                   borderRadius: BorderRadius.circular(defaultRadius),
                 ),
               ),
-              child: Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              child: Text(text,
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600)
+              ),
             ),
     );
   }
@@ -181,7 +206,8 @@ class AppTheme {
     int maxLines = 1,
     Widget? suffixIcon,
     String? Function(String?)? validator,
-  }) {
+  })
+  {
     return TextField(
       controller: controller,
       obscureText: obscureText,
@@ -199,7 +225,8 @@ class AppTheme {
     );
   }
 
-  static Widget sectionTitle(String text) {
+  static Widget sectionTitle(String text)
+  {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Text(text, style: subHeadingText),
@@ -210,7 +237,8 @@ class AppTheme {
     required Widget child,
     double? padding,
     EdgeInsets? customPadding,
-  }) {
+  })
+  {
     return Card(
       elevation: 4,
       shadowColor: Colors.black26,

@@ -12,6 +12,7 @@ class AuthNavigationService {
   AuthNavigationService(this._authRepo, this._userRepo);
 
   Future<void> navigateBasedOnAuthState() async {
+
     final user = _authRepo.currentUser;
 
     if (user == null) {
@@ -34,17 +35,20 @@ class AuthNavigationService {
   }
 
   Future<void> _navigateBasedOnUser(User user) async {
+
     final email = user.email ?? '';
 
     if (_authRepo.isAdminEmail(email)) {
       Get.offAllNamed(AppRoutes.adminDashboard);
     }
+
     else {
       final profileComplete = await _userRepo.checkProfileCompletion(user.uid);
 
       if (profileComplete) {
         Get.offAllNamed(AppRoutes.userHome);
       }
+
       else {
         Get.offAllNamed(AppRoutes.profile);
       }

@@ -18,8 +18,7 @@ dependencies:
   get: ^4.7.3
   google_fonts: ^6.3.3
   image_picker: ^1.0.7
-  http: ^1.2.0
-  crypto: ^3.0.3
+  cloudinary_sdk: ^5.0.0+1
 
 dev_dependencies:
   flutter_test:

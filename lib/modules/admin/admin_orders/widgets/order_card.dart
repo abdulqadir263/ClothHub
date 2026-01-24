@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../app/themes/app_theme.dart';
+import '../../../../app/utils/helpers.dart';
 import '../../../../data/models/order_model.dart';
 import '../admin_order_viewmodel.dart';
 
@@ -34,7 +35,7 @@ class OrderCard extends StatelessWidget {
         Text('Order #${order.orderId.substring(0, 8)}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(color: _getStatusColor(order.status), borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(color: AppHelpers.getStatusColor(order.status), borderRadius: BorderRadius.circular(20)),
           child: Text(order.status.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600)),
         ),
       ],
@@ -108,16 +109,5 @@ class OrderCard extends StatelessWidget {
         trailing: Text('Rs. ${item.totalPrice.toStringAsFixed(0)}', style: const TextStyle(fontWeight: FontWeight.w600)),
       )).toList(),
     );
-  }
-
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'pending': return Colors.orange;
-      case 'packed': return Colors.blue;
-      case 'shipped': return Colors.purple;
-      case 'delivered': return Colors.green;
-      case 'cancelled': return Colors.red;
-      default: return Colors.grey;
-    }
   }
 }

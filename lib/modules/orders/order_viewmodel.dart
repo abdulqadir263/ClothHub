@@ -13,20 +13,21 @@ class OrderViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchUserOrders();
+    _listenToOrders();
   }
 
-  Future<void> fetchUserOrders() async {
+  void _listenToOrders() {
     final currentUser = authRepo.currentUser;
     if (currentUser == null) return;
 
     isLoading.value = true;
-    try {
-      orders.value = await orderRepo.getOrdersByUser(currentUser.uid);
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to load orders');
-    } finally {
-      isLoading.value = false;
-    }
+
+    final stream = orderRepo.getOrdersByUser(currentUser.uid);
+    orders.bindStream(stream);
+    stream.listen((_) => isLoading.value = false);
+  }
+
+  Future<void> fetchUserOrders() async {
+    _listenToOrders();
   }
 }

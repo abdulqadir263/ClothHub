@@ -5,9 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../app/themes/app_theme.dart';
 import '../../../../data/models/product_model.dart';
 import '../../../../data/repositories/product_repository.dart';
+import '../../../../data/repositories/media_repository.dart';
 import '../admin_products_viewmodel.dart';
 
-/// Edit Product View - Form to update existing products
 class EditProductView extends StatefulWidget {
   final ProductModel product;
   const EditProductView({super.key, required this.product});
@@ -17,6 +17,7 @@ class EditProductView extends StatefulWidget {
 
 class _EditProductViewState extends State<EditProductView> {
   final _productRepo = Get.find<ProductRepository>();
+  final _mediaRepo = Get.find<MediaRepository>();
   final _picker = ImagePicker();
   late TextEditingController nameController;
   late TextEditingController descriptionController;
@@ -49,7 +50,10 @@ class _EditProductViewState extends State<EditProductView> {
     setState(() => isLoading = true);
     try {
       String imageUrl = widget.product.imageUrl;
-      if (selectedImage != null) imageUrl = await _productRepo.uploadImageToCloudinary(selectedImage!);
+      if (selectedImage != null) {
+        final response = await _mediaRepo.uploadImage(selectedImage!.path);
+        imageUrl = response.secureUrl ?? widget.product.imageUrl;
+      }
       await _productRepo.updateProduct(widget.product.id, {
         'name': nameController.text, 'description': descriptionController.text,
         'price': double.parse(priceController.text), 'category': category, 'imageUrl': imageUrl,

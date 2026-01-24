@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../app/themes/app_theme.dart';
+import '../../../../app/utils/helpers.dart';
 import '../admin_order_viewmodel.dart';
 
 class AdminOrderView extends StatelessWidget {
@@ -76,7 +77,7 @@ class AdminOrderView extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: _getStatusColor(order.status),
+                            color: AppHelpers.getStatusColor(order.status),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -101,7 +102,7 @@ class AdminOrderView extends StatelessWidget {
                     const SizedBox(height: 4),
 
                     Text(
-                      'Date: ${_formatDate(order.timestamp)}',
+                      'Date: ${AppHelpers.formatDate(order.timestamp)}',
                       style: TextStyle(color: Colors.grey[600]),
                     ),
 
@@ -174,25 +175,6 @@ class AdminOrderView extends StatelessWidget {
         );
       }),
     );
-  }
-
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return Colors.orange;
-      case 'processing':
-        return Colors.blue;
-      case 'delivered':
-        return Colors.green;
-      case 'cancelled':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
   }
 }
 
